@@ -1,20 +1,48 @@
 package team5_project.cs442.eventorganizer;
 
+import android.content.Intent;
+import android.location.Location;
+import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.concurrent.ConcurrentHashMap;
+
+import team5_project.cs442.eventorganizer.team5_project.cs442.eventorganizer.eventCreator.EventFlag;
 
 public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private ConcurrentHashMap<Marker, EventFlag> mFlagsHashMap;
+    private ArrayList<EventFlag> mFlagsArray = new ArrayList<EventFlag>();
+    private DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+    private Calendar currentdate = Calendar.getInstance();
+    private TimeZone obj = TimeZone.getTimeZone("CDT");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFlagsHashMap = new ConcurrentHashMap<Marker, EventFlag>();
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
     }
@@ -47,8 +75,45 @@ public class MapsActivity extends FragmentActivity {
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                     .getMap();
             // Check if we were successful in obtaining the map.
+            Log.d("Zoom : ", "Are you still loading?!");
+
+
             if (mMap != null) {
                 setUpMap();
+                Log.d("Zoom : ", "Are you still here?!");
+                CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(41.835454, -87.62587));
+                CameraUpdate zoom = CameraUpdateFactory.zoomTo(16);
+                mMap.moveCamera(center);
+                mMap.animateCamera(zoom);
+
+            } else {
+                Toast.makeText(getApplicationContext(), "Unable to create Maps", Toast.LENGTH_SHORT).show();
+            }
+        }
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        mMap.setMyLocationEnabled(false);
+        loadAllEvents();
+    }
+
+    private void loadAllEvents() {
+        EventFlag mtccFlag = new EventFlag(1, "Always Party!", "MTCC", new Date("10/31/2015 11:00"), new Date("10/31/2015 13:00"), 41.835454d, -87.62587d, "Whatever", "Sangwon", "smoon3@hawk.iit.edu", 0d);
+        mFlagsArray.add(mtccFlag);
+        plotMarkers(mFlagsArray);
+    }
+
+    private void plotMarkers(ArrayList<EventFlag> events) {
+        if (events.size() > 0) {
+            for (EventFlag event : events) {
+
+                // Create user marker with custom icon and other options
+                MarkerOptions markerOption = new MarkerOptions().position(new LatLng(event.getmLatitude(), event.getmLongitude()));
+                // We should set image dynamically by event time...for now default is blue_flag
+                markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.orange_flag));
+
+                Marker currentMarker = mMap.addMarker(markerOption);
+                mFlagsHashMap.put(currentMarker, event);
+
+                mMap.setInfoWindowAdapter(new EventInfoWindowAdapter());
             }
         }
     }
@@ -60,6 +125,62 @@ public class MapsActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        Log.d("Map Initializer : ", "Intialized with IIT MTCC");
+        //mMap.addMarker(new MarkerOptions().position(new LatLng(41.835454, -87.62587)).title("IIT"));
     }
+
+    public class EventInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+
+        public EventInfoWindowAdapter() {
+        }
+
+        @Override
+        public View getInfoWindow(Marker marker) {
+            Toast.makeText(getBaseContext(), "YAY,???", Toast.LENGTH_LONG).show();
+            return null;
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            View v = getLayoutInflater().inflate(R.layout.flag, null);
+
+            EventFlag eventFlag = mFlagsHashMap.get(marker);
+
+            ImageView markerIcon = (ImageView) v.findViewById(R.id.flag_icon);
+            markerIcon.setImageResource(R.drawable.orange_flag);
+            return v;
+        }
+
+        private int manageMarkerIcon(Date _startEvent, Date _endEvent) {
+            /**
+             * We can use this method to differenciate for time..
+             */
+            formatter.setTimeZone(obj);
+            String currentDateTime = formatter.format(currentdate.getTime());
+            String startEvent = formatter.format(_startEvent);
+            String endEvent = formatter.format(_endEvent);
+
+            /**
+            if (markerIcon.equals("green"))
+                return R.drawable.orange_flag;
+            /**else if(markerIcon.equals("icon2"))
+             return R.drawable.icon2;
+             else if(markerIcon.equals("icon3"))
+             return R.drawable.icon3;
+             else if(markerIcon.equals("icon4"))
+             return R.drawable.icon4;
+             else if(markerIcon.equals("icon5"))
+             return R.drawable.icon5;
+             else if(markerIcon.equals("icon6"))
+             return R.drawable.icon6;
+             else if(markerIcon.equals("icon7"))
+             return R.drawable.icon7;
+            else
+                return R.drawable.orange_flag;
+            */
+            return R.drawable.orange_flag;
+        }
+    }
+
+
 }

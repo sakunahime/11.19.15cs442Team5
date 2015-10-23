@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Event Organizer</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_maps">IIT Event Organizer</string>
+    <string name="event_name">Event Name : </string>
+    <string name="event_organizer">Event Organizer : </string>
+    <string name="event_time">Event Time : </string>
+    <string name="event_location">Event Name : </string>
+    <string name="back">Go Back</string>
 </resources>
