@@ -1,11 +1,13 @@
 package team5_project.cs442.eventorganizer.team5_project.cs442.eventorganizer.eventCreator;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by sangwon on 10/22/15.
  */
-public class EventFlag {
+@SuppressWarnings("serial")
+public class Event implements Serializable {
 
     private int mEventId;
     private String mEventName;
@@ -20,7 +22,7 @@ public class EventFlag {
     private Double mCost;
 
 
-    public EventFlag(int mEventId, String mEventName, String mEventLocation, Date mEventStartTime, Date mEventEndTime, Double mLatitude, Double mLongitude, String mDescription, String mHost, String mEventCreator, Double mCost) {
+    public Event(int mEventId, String mEventName, String mEventLocation, Date mEventStartTime, Date mEventEndTime, Double mLatitude, Double mLongitude, String mDescription, String mHost, String mEventCreator, Double mCost) {
         this.mEventId = mEventId;
         this.mEventName = mEventName;
         this.mEventLocation = mEventLocation;

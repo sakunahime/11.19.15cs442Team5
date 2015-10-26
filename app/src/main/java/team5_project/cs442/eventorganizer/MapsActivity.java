@@ -2,12 +2,10 @@ package team5_project.cs442.eventorganizer;
 
 import android.content.Intent;
 import android.location.Location;
-import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -19,22 +17,23 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 
-import team5_project.cs442.eventorganizer.team5_project.cs442.eventorganizer.eventCreator.EventFlag;
+import team5_project.cs442.eventorganizer.team5_project.cs442.eventorganizer.eventCreator.EventDetailActivity;
+import team5_project.cs442.eventorganizer.team5_project.cs442.eventorganizer.eventCreator.Event;
 
 public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
-    private ConcurrentHashMap<Marker, EventFlag> mFlagsHashMap;
-    private ArrayList<EventFlag> mFlagsArray = new ArrayList<EventFlag>();
+    private ConcurrentHashMap<Marker, Event> mFlagsHashMap;
+    private ArrayList<Event> mFlagsArray = new ArrayList<Event>();
     private DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
     private Calendar currentdate = Calendar.getInstance();
     private TimeZone obj = TimeZone.getTimeZone("CDT");
@@ -42,7 +41,7 @@ public class MapsActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFlagsHashMap = new ConcurrentHashMap<Marker, EventFlag>();
+        mFlagsHashMap = new ConcurrentHashMap<Marker, Event>();
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
     }
@@ -80,30 +79,42 @@ public class MapsActivity extends FragmentActivity {
 
             if (mMap != null) {
                 setUpMap();
-                Log.d("Zoom : ", "Are you still here?!");
                 CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(41.835454, -87.62587));
                 CameraUpdate zoom = CameraUpdateFactory.zoomTo(16);
                 mMap.moveCamera(center);
                 mMap.animateCamera(zoom);
 
+                mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+                    @Override
+                    public void onMyLocationChange(Location location) {
+                        Log.d("Zoom : ", "Are you here?!");
+                        CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(41.835454, -87.62587));
+                        CameraUpdate zoom = CameraUpdateFactory.zoomTo(16);
+                        mMap.moveCamera(center);
+                        mMap.animateCamera(zoom);
+                    }
+                });
+
+
             } else {
                 Toast.makeText(getApplicationContext(), "Unable to create Maps", Toast.LENGTH_SHORT).show();
             }
         }
-        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         mMap.setMyLocationEnabled(false);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         loadAllEvents();
     }
 
     private void loadAllEvents() {
-        EventFlag mtccFlag = new EventFlag(1, "Always Party!", "MTCC", new Date("10/31/2015 11:00"), new Date("10/31/2015 13:00"), 41.835454d, -87.62587d, "Whatever", "Sangwon", "smoon3@hawk.iit.edu", 0d);
+        Event mtccFlag = new Event(1, "Always Party!", "MTCC", new Date("10/31/2015 11:00"), new Date("10/31/2015 13:00"), 41.835454d, -87.62587d, "Whatever", "Sangwon", "smoon3@hawk.iit.edu", 0d);
         mFlagsArray.add(mtccFlag);
         plotMarkers(mFlagsArray);
     }
 
-    private void plotMarkers(ArrayList<EventFlag> events) {
+    private void plotMarkers(ArrayList<Event> events) {
         if (events.size() > 0) {
-            for (EventFlag event : events) {
+            for (Event event : events) {
 
                 // Create user marker with custom icon and other options
                 MarkerOptions markerOption = new MarkerOptions().position(new LatLng(event.getmLatitude(), event.getmLongitude()));
@@ -136,7 +147,7 @@ public class MapsActivity extends FragmentActivity {
 
         @Override
         public View getInfoWindow(Marker marker) {
-            Toast.makeText(getBaseContext(), "YAY,???", Toast.LENGTH_LONG).show();
+
             return null;
         }
 
@@ -144,10 +155,14 @@ public class MapsActivity extends FragmentActivity {
         public View getInfoContents(Marker marker) {
             View v = getLayoutInflater().inflate(R.layout.flag, null);
 
-            EventFlag eventFlag = mFlagsHashMap.get(marker);
+            Event event = mFlagsHashMap.get(marker);
 
-            ImageView markerIcon = (ImageView) v.findViewById(R.id.flag_icon);
-            markerIcon.setImageResource(R.drawable.orange_flag);
+            Intent deatilIntent = new Intent(getBaseContext(), EventDetailActivity.class);
+            deatilIntent.putExtra("Event", (Serializable) event);
+            startActivity(deatilIntent);
+
+            //ImageView markerIcon = (ImageView) v.findViewById(R.id.flag_icon);
+            //markerIcon.setImageResource(R.drawable.orange_flag);
             return v;
         }
 

@@ -16,7 +16,83 @@
             android:text="@string/event_name" />
 
         <EditText
-            android:id="@+id/txtTitle"
+            android:id="@+id/event_name_edit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.75"
+            android:ems="10" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:text="@string/event_location" />
+
+        <EditText
+            android:id="@+id/event_location_edit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.75"
+            android:ems="10" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:text="@string/event_start_time" />
+
+        <EditText
+            android:id="@+id/event_start_time_edit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.75"
+            android:ems="10" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:text="@string/event_end_time" />
+
+        <EditText
+            android:id="@+id/event_end_time_edit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.75"
+            android:ems="10" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:text="@string/event_host" />
+
+        <EditText
+            android:id="@+id/event_host_edit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.75"
@@ -35,7 +111,7 @@
             android:text="@string/event_organizer" />
 
         <EditText
-            android:id="@+id/txtAuthor"
+            android:id="@+id/event_organizer_edit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.75"
@@ -51,41 +127,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.25"
-            android:text="@string/event_time" />
+            android:text="@string/event_host" />
 
         <EditText
-            android:id="@+id/txtPublisher"
+            android:id="@+id/event_cost_edit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.75"
             android:ems="10" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="0.25"
-            android:text="@string/event_time" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.75"
-            android:orientation="horizontal" >
-
-            <EditText
-                android:id="@+id/txtIsbn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="5" />
-        </LinearLayout>
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -104,10 +155,11 @@
             android:orientation="horizontal" >
 
             <Button
-                android:id="@+id/btnSubmit"
+                android:id="@+id/go_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="5"
+                android:layout_gravity="center"
                 android:text="@string/back" />
 
         </LinearLayout>
