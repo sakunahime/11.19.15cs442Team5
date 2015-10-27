@@ -1,47 +1,40 @@
 package team5_project.cs442.eventorganizer;
 
-import android.content.Intent;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.List;
 
-import team5_project.cs442.eventorganizer.team5_project.cs442.eventorganizer.eventCreator.EventDetailActivity;
 import team5_project.cs442.eventorganizer.team5_project.cs442.eventorganizer.eventCreator.Event;
+import team5_project.cs442.eventorganizer.team5_project.cs442.eventorganizer.location.EventChecker;
+import team5_project.cs442.eventorganizer.team5_project.cs442.eventorganizer.location.LocationLoader;
 
 public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
-    private ConcurrentHashMap<Marker, Event> mFlagsHashMap;
-    private ArrayList<Event> mFlagsArray = new ArrayList<Event>();
-    private DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-    private Calendar currentdate = Calendar.getInstance();
-    private TimeZone obj = TimeZone.getTimeZone("CDT");
+    private LocationLoader locationLoader;
+    private List<team5_project.cs442.eventorganizer.team5_project.cs442.eventorganizer.location.Location> locations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFlagsHashMap = new ConcurrentHashMap<Marker, Event>();
+        locationLoader = new LocationLoader();
+        locations = locationLoader.getLocation();
+        MapsInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
     }
@@ -51,6 +44,7 @@ public class MapsActivity extends FragmentActivity {
         super.onResume();
         setUpMapIfNeeded();
     }
+
 
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
@@ -74,8 +68,6 @@ public class MapsActivity extends FragmentActivity {
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                     .getMap();
             // Check if we were successful in obtaining the map.
-            Log.d("Zoom : ", "Are you still loading?!");
-
 
             if (mMap != null) {
                 setUpMap();
@@ -87,7 +79,6 @@ public class MapsActivity extends FragmentActivity {
                 mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
                     @Override
                     public void onMyLocationChange(Location location) {
-                        Log.d("Zoom : ", "Are you here?!");
                         CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(41.835454, -87.62587));
                         CameraUpdate zoom = CameraUpdateFactory.zoomTo(16);
                         mMap.moveCamera(center);
@@ -107,24 +98,42 @@ public class MapsActivity extends FragmentActivity {
     }
 
     private void loadAllEvents() {
-        Event mtccFlag = new Event(1, "Always Party!", "MTCC", new Date("10/31/2015 11:00"), new Date("10/31/2015 13:00"), 41.835454d, -87.62587d, "Whatever", "Sangwon", "smoon3@hawk.iit.edu", 0d);
-        mFlagsArray.add(mtccFlag);
-        plotMarkers(mFlagsArray);
+
+        /**
+         * TODO: Use Gaurang's interface to load events.
+         */
+        plotMarkers(locations);
     }
 
-    private void plotMarkers(ArrayList<Event> events) {
-        if (events.size() > 0) {
-            for (Event event : events) {
+    private void plotMarkers(List<team5_project.cs442.eventorganizer.team5_project.cs442.eventorganizer.location.Location> locations) {
+        if (locations.size() > 0) {
+            Log.d("Location Size : ", String.valueOf(locations.size()));
+            for (team5_project.cs442.eventorganizer.team5_project.cs442.eventorganizer.location.Location location : locations) {
+                Log.d("Location Loop : ", String.valueOf(location.getmLocation()));
+                if (location.getEventsCounter() != 0) {
+                    // Create user marker with custom icon and other options
+                    MarkerOptions markerOption = new MarkerOptions().position(new LatLng(location.getmLatitude(), location.getmLongitude()));
+                    // We should set image dynamically by event time...for now default is blue_flag
 
-                // Create user marker with custom icon and other options
-                MarkerOptions markerOption = new MarkerOptions().position(new LatLng(event.getmLatitude(), event.getmLongitude()));
-                // We should set image dynamically by event time...for now default is blue_flag
-                markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.orange_flag));
+                    // by the first event time line, we need to update location icon color..
+                    // we assume that the first object is most recent event.
+                    Event event = location.getEvents().get(0);
+                    BitmapDescriptor icon = EventChecker.eventChecker(event.getmEventStartTime(), event.getmEventEndTime());
+                    markerOption.icon(icon);
+                    Marker currentMarker = mMap.addMarker(markerOption);
+                    //mMap.setInfoWindowAdapter(new EventInfoWindowAdapter());
+                } else { // FIXME: It's temporarily ..please remove it..
+                    MarkerOptions markerOption = new MarkerOptions().position(new LatLng(location.getmLatitude(), location.getmLongitude()));
+                    // We should set image dynamically by event time...for now default is blue_flag
 
-                Marker currentMarker = mMap.addMarker(markerOption);
-                mFlagsHashMap.put(currentMarker, event);
-
-                mMap.setInfoWindowAdapter(new EventInfoWindowAdapter());
+                    markerOption.title(location.getmLocation());
+                    Log.d("Location : ", markerOption.getTitle());
+                    // by the first event time line, we need to update location icon color..
+                    // we assume that the first object is most recent event.
+                    BitmapDescriptor icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET);
+                    markerOption.icon(icon);
+                    Marker currentMarker = mMap.addMarker(markerOption);
+                }
             }
         }
     }
@@ -140,62 +149,33 @@ public class MapsActivity extends FragmentActivity {
         //mMap.addMarker(new MarkerOptions().position(new LatLng(41.835454, -87.62587)).title("IIT"));
     }
 
-    public class EventInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+    /**
+     public class EventInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
-        public EventInfoWindowAdapter() {
-        }
+     public EventInfoWindowAdapter() {
+     }
 
-        @Override
-        public View getInfoWindow(Marker marker) {
+     @Override public View getInfoWindow(Marker marker) {
 
-            return null;
-        }
+     return null;
+     }
 
-        @Override
-        public View getInfoContents(Marker marker) {
-            View v = getLayoutInflater().inflate(R.layout.flag, null);
+     @Override public View getInfoContents(Marker marker) {
+     View v = getLayoutInflater().inflate(R.layout.flag, null);
 
-            Event event = mFlagsHashMap.get(marker);
+     Event event = mFlagsHashMap.get(marker);
 
-            Intent deatilIntent = new Intent(getBaseContext(), EventDetailActivity.class);
-            deatilIntent.putExtra("Event", (Serializable) event);
-            startActivity(deatilIntent);
+     Intent deatilIntent = new Intent(getBaseContext(), EventDetailActivity.class);
+     deatilIntent.putExtra("Event", (Serializable) event);
+     startActivity(deatilIntent);
 
-            //ImageView markerIcon = (ImageView) v.findViewById(R.id.flag_icon);
-            //markerIcon.setImageResource(R.drawable.orange_flag);
-            return v;
-        }
-
-        private int manageMarkerIcon(Date _startEvent, Date _endEvent) {
-            /**
-             * We can use this method to differenciate for time..
-             */
-            formatter.setTimeZone(obj);
-            String currentDateTime = formatter.format(currentdate.getTime());
-            String startEvent = formatter.format(_startEvent);
-            String endEvent = formatter.format(_endEvent);
-
-            /**
-            if (markerIcon.equals("green"))
-                return R.drawable.orange_flag;
-            /**else if(markerIcon.equals("icon2"))
-             return R.drawable.icon2;
-             else if(markerIcon.equals("icon3"))
-             return R.drawable.icon3;
-             else if(markerIcon.equals("icon4"))
-             return R.drawable.icon4;
-             else if(markerIcon.equals("icon5"))
-             return R.drawable.icon5;
-             else if(markerIcon.equals("icon6"))
-             return R.drawable.icon6;
-             else if(markerIcon.equals("icon7"))
-             return R.drawable.icon7;
-            else
-                return R.drawable.orange_flag;
-            */
-            return R.drawable.orange_flag;
-        }
-    }
-
-
+     //ImageView markerIcon = (ImageView) v.findViewById(R.id.flag_icon);
+     //markerIcon.setImageResource(R.drawable.orange_flag);
+     return v;
+     }
+     }
+     */
 }
+
+
+

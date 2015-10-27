@@ -1,5 +1,7 @@
 package team5_project.cs442.eventorganizer.team5_project.cs442.eventorganizer.location;
 
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 
 import java.util.ArrayList;
@@ -20,13 +22,14 @@ public class Location {
 
     private List<Event> events;
 
-    private Marker marker;
+    private BitmapDescriptor icon;
 
     public Location(String mLocation, Double mLatitude, Double mLongitude) {
         this.mLocation = mLocation;
         this.mLatitude = mLatitude;
         this.mLongitude = mLongitude;
         events = new ArrayList<Event>();
+        icon = null;
     }
 
     public String getmLocation() {
@@ -53,14 +56,51 @@ public class Location {
         this.mLongitude = mLongitude;
     }
 
-    private boolean setMarker(Marker marker) {
-        this.marker = marker;
-        return (this.marker != null) ?  true : false;
-    }
-
-    private boolean setEvents(List<Event> events) {
-
+    public boolean setEvents(List<Event> events) {
 
         return (this.events == null) ? false : true;
+    }
+
+    public boolean addEvent(Event event) {
+        return (event != null) ? (this.events.add(event)) : false;
+    }
+
+    public boolean updateEvent(Event _event) {
+        for(Event event : events) {
+            if(event.getmEventId() == _event.getmEventId()) {
+                int index = events.indexOf(event);
+                events.add(index, _event);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean deleteEvent(Event _event) {
+        for(Event event : events) {
+            if(event.getmEventId() == _event.getmEventId()) {
+                int index = events.indexOf(event);
+                events.remove(index);
+                return true;
+            }
+        }
+        return events.contains(_event);
+    }
+
+
+    public BitmapDescriptor getIcon() {
+        return icon;
+    }
+
+    public List<Event> getEvents() {
+        return (events != null) ? events : null;
+    }
+
+    public int getEventsCounter() {
+        return events.size();
+    }
+
+    public void setIcon(BitmapDescriptor icon) {
+        this.icon = icon;
     }
 }
