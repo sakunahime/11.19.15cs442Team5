@@ -1,4 +1,4 @@
-package team5_project.cs442.eventorganizer.team5_project.cs442.eventorganizer.location;
+package team5_project.cs442.eventorganizer.location;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package team5_project.cs442.eventorganizer.team5_project.cs442.eventorganizer.eventCreator;
+package team5_project.cs442.eventorganizer.eventCreator;
 
 import android.app.Activity;
 import android.content.Intent;

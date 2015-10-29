@@ -19,15 +19,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
-import team5_project.cs442.eventorganizer.team5_project.cs442.eventorganizer.eventCreator.Event;
-import team5_project.cs442.eventorganizer.team5_project.cs442.eventorganizer.location.EventChecker;
-import team5_project.cs442.eventorganizer.team5_project.cs442.eventorganizer.location.LocationLoader;
+import team5_project.cs442.eventorganizer.eventCreator.Event;
+import team5_project.cs442.eventorganizer.location.EventChecker;
+import team5_project.cs442.eventorganizer.location.LocationLoader;
 
 public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LocationLoader locationLoader;
-    private List<team5_project.cs442.eventorganizer.team5_project.cs442.eventorganizer.location.Location> locations;
+    private List<team5_project.cs442.eventorganizer.location.Location> locations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,10 +105,10 @@ public class MapsActivity extends FragmentActivity {
         plotMarkers(locations);
     }
 
-    private void plotMarkers(List<team5_project.cs442.eventorganizer.team5_project.cs442.eventorganizer.location.Location> locations) {
+    private void plotMarkers(List<team5_project.cs442.eventorganizer.location.Location> locations) {
         if (locations.size() > 0) {
             Log.d("Location Size : ", String.valueOf(locations.size()));
-            for (team5_project.cs442.eventorganizer.team5_project.cs442.eventorganizer.location.Location location : locations) {
+            for (team5_project.cs442.eventorganizer.location.Location location : locations) {
                 Log.d("Location Loop : ", String.valueOf(location.getmLocation()));
                 if (location.getEventsCounter() != 0) {
                     // Create user marker with custom icon and other options
