@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity implements
     private static final Pattern email_address = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "hawk+(\\.iit+)*(\\.edu)$");
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "LoginActivity";
 
     /* RequestCode for resolutions involving sign-in */
     private static final int RC_SIGN_IN = 1;
@@ -253,7 +253,7 @@ public class LoginActivity extends AppCompatActivity implements
         boolean matchFound = matcher.matches();
         if(!matchFound)
         {
-            Toast.makeText(getApplicationContext(), "You ENTERED AN INVALID EMAIL",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "You ENTERED AN INVALID EMAIL(Use HAWK id)",Toast.LENGTH_LONG).show();
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
             mGoogleApiClient.disconnect();
            showSignedOutUI();
