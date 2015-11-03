@@ -91,8 +91,9 @@ public class MapsActivity extends FragmentActivity {
                 Toast.makeText(getApplicationContext(), "Unable to create Maps", Toast.LENGTH_SHORT).show();
             }
         }
-        mMap.setMyLocationEnabled(false);
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         loadAllEvents();
     }
@@ -130,7 +131,7 @@ public class MapsActivity extends FragmentActivity {
                     Log.d("Location : ", markerOption.getTitle());
                     // by the first event time line, we need to update location icon color..
                     // we assume that the first object is most recent event.
-                    BitmapDescriptor icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET);
+                    BitmapDescriptor icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
                     markerOption.icon(icon);
                     Marker currentMarker = mMap.addMarker(markerOption);
                 }

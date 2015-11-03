@@ -14,22 +14,18 @@ public class Event implements Serializable {
     private String mEventLocation;
     private Date mEventStartTime;
     private Date mEventEndTime;
-    private Double mLatitude;
-    private Double mLongitude;
     private String mDescription;
     private String mHost;
     private String mEventCreator;
     private Double mCost;
 
 
-    public Event(int mEventId, String mEventName, String mEventLocation, Date mEventStartTime, Date mEventEndTime, Double mLatitude, Double mLongitude, String mDescription, String mHost, String mEventCreator, Double mCost) {
+    public Event(int mEventId, String mEventName, String mEventLocation, Date mEventStartTime, Date mEventEndTime, String mDescription, String mHost, String mEventCreator, Double mCost) {
         this.mEventId = mEventId;
         this.mEventName = mEventName;
         this.mEventLocation = mEventLocation;
         this.mEventStartTime = mEventStartTime;
         this.mEventEndTime = mEventEndTime;
-        this.mLatitude = mLatitude;
-        this.mLongitude = mLongitude;
         this.mDescription = mDescription;
         this.mHost = mHost;
         this.mEventCreator = mEventCreator;
@@ -74,22 +70,6 @@ public class Event implements Serializable {
 
     public void setmEventEndTime(Date mEventEndTime) {
         this.mEventEndTime = mEventEndTime;
-    }
-
-    public Double getmLatitude() {
-        return mLatitude;
-    }
-
-    public void setmLatitude(Double mLatitude) {
-        this.mLatitude = mLatitude;
-    }
-
-    public Double getmLongitude() {
-        return mLongitude;
-    }
-
-    public void setmLongitude(Double mLongitude) {
-        this.mLongitude = mLongitude;
     }
 
     public String getmDescription() {

@@ -28,7 +28,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-
 /**
  * Minimal activity demonstrating basic Google Sign-In.
  */
@@ -115,8 +114,7 @@ public class LoginActivity extends AppCompatActivity implements
                 mStatus.setText(getString(R.string.signed_in_fmt, name));
 
                 // Show users' email address (which requires GET_ACCOUNTS permission)
-                if (checkAccountsPermission())
-                {
+                if (checkAccountsPermission()) {
                     String currentAccount = Plus.AccountApi.getAccountName(mGoogleApiClient);
                     ((TextView) findViewById(R.id.email)).setText(currentAccount);
 
@@ -145,6 +143,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     /**
      * Check if we have the GET_ACCOUNTS permission and request it if we do not.
+     *
      * @return true if we have the permission, false if we do not.
      */
     private boolean checkAccountsPermission() {
@@ -156,26 +155,26 @@ public class LoginActivity extends AppCompatActivity implements
         } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, perm)) {
             // Need to show permission rationale, display a snackbar and then request
             // the permission again when the snackbar is dismissed.
-           // Snackbar.make(findViewById(R.id.main_layout),
-                 //   R.string.contacts_permission_rationale,
-             //       Snackbar.LENGTH_INDEFINITE)
-               //     .setAction(android.R.string.ok, new View.OnClickListener() {
+            // Snackbar.make(findViewById(R.id.main_layout),
+            //   R.string.contacts_permission_rationale,
+            //       Snackbar.LENGTH_INDEFINITE)
+            //     .setAction(android.R.string.ok, new View.OnClickListener() {
             //           @Override
-              //          public void onClick(View v) {
-                            // Request the permission again.
-                //            ActivityCompat.requestPermissions(MainActivity.this,
-                  //                  new String[]{perm},
-                    //                RC_PERM_GET_ACCOUNTS);
-                        }
-                    //}).show();
-            return false;
-        } //else if {
-            // No explanation needed, we can request the permission.
-            //ActivityCompat.requestPermissions(this,
-              //      new String[]{perm},
-                //    RC_PERM_GET_ACCOUNTS);
-           // return false;
-        //}
+            //          public void onClick(View v) {
+            // Request the permission again.
+            //            ActivityCompat.requestPermissions(MainActivity.this,
+            //                  new String[]{perm},
+            //                RC_PERM_GET_ACCOUNTS);
+        }
+        //}).show();
+        return false;
+    } //else if {
+    // No explanation needed, we can request the permission.
+    //ActivityCompat.requestPermissions(this,
+    //      new String[]{perm},
+    //    RC_PERM_GET_ACCOUNTS);
+    // return false;
+    //}
     //}
 
     private void showSignedInUI() {
@@ -251,20 +250,23 @@ public class LoginActivity extends AppCompatActivity implements
         ((TextView) findViewById(R.id.email)).setText(currentAccount);
         Matcher matcher = email_address.matcher(currentAccount);
         boolean matchFound = matcher.matches();
-        if(!matchFound)
-        {
-            Toast.makeText(getApplicationContext(), "You ENTERED AN INVALID EMAIL(Use HAWK id)",Toast.LENGTH_LONG).show();
+        if (!matchFound) {
+            Toast.makeText(getApplicationContext(), "You ENTERED AN INVALID EMAIL(Use HAWK id)", Toast.LENGTH_LONG).show();
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
             mGoogleApiClient.disconnect();
-           showSignedOutUI();
+            showSignedOutUI();
 
-        }
-        else{
-        Log.d(TAG, "onConnected:" + bundle);
-        mShouldResolve = false;
+        } else {
+            Log.d(TAG, "onConnected:" + bundle);
+            mShouldResolve = false;
 
-        // Show the signed-in UI
-        showSignedInUI();}// here you should put the address of the next page to be displayed
+            // Show the signed-in UI
+            //showSignedInUI();
+            Intent mapIntent = new Intent(this, MapsActivity.class);
+            startActivity(mapIntent);
+            finish();
+
+        }// here you should put the address of the next page to be displayed
     }
     // [END on_connected]
 

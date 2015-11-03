@@ -185,7 +185,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                     Double cost = c.getDouble(c.getColumnIndex(String.valueOf(mCost)));
                     //eventList.add(eventid, eventname, eventlocation, starttime, endtime, latitute, longitute, description, host, eventcreator, cost);
                     //		eventList(eventid, eventname, eventlocation, starttime, endtime, latitute, longitute, description, host, eventcreator, cost);
-                    Event e = new Event(eventid, eventname, eventlocation, starttime, endtime, latitute, longitute, description, host, eventcreator, cost);
+                    Event e = new Event(eventid, eventname, eventlocation, starttime, endtime, description, host, eventcreator, cost);
 
 
                     c.moveToNext();
@@ -217,8 +217,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 values.put(String.valueOf(mEventStartTime),getDateTime());
                 values.put(String.valueOf(mEventEndTime),getDateTime1());
            //     values.put(mEventEndTime, event.getmEventEndTime());
-                values.put(String.valueOf(mLatitude), event.getmLatitude());
-                values.put(String.valueOf(mLongitude), event.getmLongitude());
                 values.put(mDescription, event.getmDescription());
                 values.put(mHost, event.getmHost());
                 values.put(mEventCreator, event.getmEventCreator());
@@ -261,8 +259,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 values.put(String.valueOf(mEventStartTime),dateString);
                 values.put(String.valueOf(mEventEndTime),dateString1);
                 //     values.put(mEventEndTime, event.getmEventEndTime());
-                values.put(String.valueOf(mLatitude), event.getmLatitude());
-                values.put(String.valueOf(mLongitude), event.getmLongitude());
                 values.put(mDescription, event.getmDescription());
                 values.put(mHost, event.getmHost());
                 values.put(mEventCreator, event.getmEventCreator());
