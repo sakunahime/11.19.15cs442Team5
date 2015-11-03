@@ -17,8 +17,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import team5_project.cs442.eventorganizer.database.ConnectDB;
+import team5_project.cs442.eventorganizer.database.EventDatabase;
 import team5_project.cs442.eventorganizer.eventCreator.Event;
 import team5_project.cs442.eventorganizer.location.EventChecker;
 import team5_project.cs442.eventorganizer.location.LocationLoader;
@@ -28,11 +32,14 @@ public class MapsActivity extends FragmentActivity {
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LocationLoader locationLoader;
     private List<team5_project.cs442.eventorganizer.location.Location> locations;
+    private EventDatabase dbConnector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         locationLoader = new LocationLoader();
+        ConnectDB db = new ConnectDB();
+        dbConnector = db.getDBConnection();
         locations = locationLoader.getLocation();
         MapsInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_maps);
@@ -100,15 +107,21 @@ public class MapsActivity extends FragmentActivity {
 
     private void loadAllEvents() {
 
-        /**
-         * TODO: Use Gaurang's interface to load events.
-         */
+        //if(dbConnector.isConnected()) {
+            Log.d("Loading db :", "Loading DB! Got connection! :)");
+            for(team5_project.cs442.eventorganizer.location.Location location : locations) {
+                List<Event> events = dbConnector.read(location.getmLocation());
+                location.setEvents(events);
+            }
+        //}
+
+
         plotMarkers(locations);
     }
 
     private void plotMarkers(List<team5_project.cs442.eventorganizer.location.Location> locations) {
         if (locations.size() > 0) {
-            Log.d("Location Size : ", String.valueOf(locations.size()));
+            Log.d("Has Events Size by loc:", String.valueOf(locations.size()));
             for (team5_project.cs442.eventorganizer.location.Location location : locations) {
                 Log.d("Location Loop : ", String.valueOf(location.getmLocation()));
                 if (location.getEventsCounter() != 0) {
