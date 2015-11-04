@@ -1,9 +1,14 @@
 package team5_project.cs442.eventorganizer;
 
+import android.content.Intent;
 import android.location.Location;
+import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -12,7 +17,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -21,9 +25,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import team5_project.cs442.eventorganizer.database.ConnectDB;
-import team5_project.cs442.eventorganizer.database.EventDatabase;
+import team5_project.cs442.eventorganizer.database.Database;
 import team5_project.cs442.eventorganizer.eventCreator.Event;
+import team5_project.cs442.eventorganizer.eventCreator.EventDetailActivity;
+import team5_project.cs442.eventorganizer.location.EventAdapter;
 import team5_project.cs442.eventorganizer.location.EventChecker;
 import team5_project.cs442.eventorganizer.location.LocationLoader;
 
@@ -32,15 +37,42 @@ public class MapsActivity extends FragmentActivity {
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LocationLoader locationLoader;
     private List<team5_project.cs442.eventorganizer.location.Location> locations;
-    private EventDatabase dbConnector;
+    private String email;
+    private Map<Marker, List<Event>> eventsByMarker;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        Intent intent = getIntent();
+        email = intent.getExtras().getString("email");
         locationLoader = new LocationLoader();
-        ConnectDB db = new ConnectDB();
-        dbConnector = db.getDBConnection();
+        eventsByMarker = new HashMap<Marker, List<Event>>();
         locations = locationLoader.getLocation();
+
+        // Temp
+        /**
+         Event temp = new Event(1, "Test1", "MTCC", new Date("11/2/2015 20:00"), new Date("11/2/2015 21:00"), "Test", "Sangwon", email, 0d);
+         Event temp2 = new Event(2, "Test2", "IIT Tower", new Date("11/2/2015 19:00"), new Date("11/2/2015 21:00"), "Test2", "Sangwon2", email, 10d);
+
+
+         for (team5_project.cs442.eventorganizer.location.Location location : locations) {
+         if (location.getmLocation().equals(temp.getmEventLocation())) {
+         Log.d(" Test1: ", "Added");
+         location.addEvent(temp);
+
+         }
+         if (location.getmLocation().equals(temp2.getmEventLocation())) {
+         Log.d(" Test1: ", "Added");
+         location.addEvent(temp2);
+
+         }
+         }
+         // Temp end
+         */
+
         MapsInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
@@ -105,16 +137,14 @@ public class MapsActivity extends FragmentActivity {
         loadAllEvents();
     }
 
-    private void loadAllEvents() {
+    public void loadAllEvents() {
 
-        //if(dbConnector.isConnected()) {
-            Log.d("Loading db :", "Loading DB! Got connection! :)");
-            for(team5_project.cs442.eventorganizer.location.Location location : locations) {
-                List<Event> events = dbConnector.read(location.getmLocation());
+        for (team5_project.cs442.eventorganizer.location.Location location : locations) {
+            List<Event> events = Database.readList(Database.TAG_LOC, location.getmLocation());
+            if (events.size() != 0) {
                 location.setEvents(events);
             }
-        //}
-
+        }
 
         plotMarkers(locations);
     }
@@ -123,7 +153,6 @@ public class MapsActivity extends FragmentActivity {
         if (locations.size() > 0) {
             Log.d("Has Events Size by loc:", String.valueOf(locations.size()));
             for (team5_project.cs442.eventorganizer.location.Location location : locations) {
-                Log.d("Location Loop : ", String.valueOf(location.getmLocation()));
                 if (location.getEventsCounter() != 0) {
                     // Create user marker with custom icon and other options
                     MarkerOptions markerOption = new MarkerOptions().position(new LatLng(location.getmLatitude(), location.getmLongitude()));
@@ -135,18 +164,10 @@ public class MapsActivity extends FragmentActivity {
                     BitmapDescriptor icon = EventChecker.eventChecker(event.getmEventStartTime(), event.getmEventEndTime());
                     markerOption.icon(icon);
                     Marker currentMarker = mMap.addMarker(markerOption);
-                    //mMap.setInfoWindowAdapter(new EventInfoWindowAdapter());
-                } else { // FIXME: It's temporarily ..please remove it..
-                    MarkerOptions markerOption = new MarkerOptions().position(new LatLng(location.getmLatitude(), location.getmLongitude()));
-                    // We should set image dynamically by event time...for now default is blue_flag
+                    currentMarker.setTitle(location.getmLocation());
+                    eventsByMarker.put(currentMarker, location.getEvents());
+                    mMap.setInfoWindowAdapter(new EventInfoWindowAdapter());
 
-                    markerOption.title(location.getmLocation());
-                    Log.d("Location : ", markerOption.getTitle());
-                    // by the first event time line, we need to update location icon color..
-                    // we assume that the first object is most recent event.
-                    BitmapDescriptor icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
-                    markerOption.icon(icon);
-                    Marker currentMarker = mMap.addMarker(markerOption);
                 }
             }
         }
@@ -160,35 +181,43 @@ public class MapsActivity extends FragmentActivity {
      */
     private void setUpMap() {
         Log.d("Map Initializer : ", "Intialized with IIT MTCC");
-        //mMap.addMarker(new MarkerOptions().position(new LatLng(41.835454, -87.62587)).title("IIT"));
     }
 
-    /**
-     public class EventInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
-     public EventInfoWindowAdapter() {
-     }
+    public class EventInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+        public EventInfoWindowAdapter() {
+        }
 
-     @Override public View getInfoWindow(Marker marker) {
+        @Override
+        public View getInfoWindow(Marker marker) {
+            return null;
+        }
 
-     return null;
-     }
+        @Override
+        public View getInfoContents(Marker marker) {
+            marker.setDraggable(true);
+            View v = getLayoutInflater().inflate(R.layout.flag, null);
+            ListView listV = (ListView) v.findViewById(R.id.flag_list_view);
+            v.setClickable(true);
+            listV.setClickable(true);
+            final List<Event> events = eventsByMarker.get(marker);
+            Log.d("Marker & Size:", marker.getTitle() + ":" + String.valueOf(events.size()));
+            int resID = R.layout.event_detail_in_flag;
+            final EventAdapter eventAdapter = new EventAdapter(v.getContext(), resID, events);
+            listV.setAdapter(eventAdapter);
 
-     @Override public View getInfoContents(Marker marker) {
-     View v = getLayoutInflater().inflate(R.layout.flag, null);
+            listV.setOnItemClickListener(new ListView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent i = new Intent(getBaseContext(), EventDetailActivity.class);
+                    i.putExtra("Event", events.get(position));
+                    startActivity(i);
+                }
+            });
 
-     Event event = mFlagsHashMap.get(marker);
+            return v;
+        }
+    }
 
-     Intent deatilIntent = new Intent(getBaseContext(), EventDetailActivity.class);
-     deatilIntent.putExtra("Event", (Serializable) event);
-     startActivity(deatilIntent);
-
-     //ImageView markerIcon = (ImageView) v.findViewById(R.id.flag_icon);
-     //markerIcon.setImageResource(R.drawable.orange_flag);
-     return v;
-     }
-     }
-     */
 }
 
 

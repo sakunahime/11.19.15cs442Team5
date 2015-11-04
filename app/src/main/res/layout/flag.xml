@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/flag_info_layout"
     android:layout_width="12dp"
     android:layout_height="12dp"
+    android:descendantFocusability="blocksDescendants"
     android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/flag_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="12dp"
-        android:layout_y="12dp" />
+    <ListView
+        android:id="@+id/flag_list_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
+
 </LinearLayout>

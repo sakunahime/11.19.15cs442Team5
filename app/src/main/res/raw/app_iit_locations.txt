@@ -17,7 +17,7 @@ Keating Hall,41.838954,-87.625601
 Life Sciences,41.837883,-87.627382
 Main Building,41.83423,-87.629228
 McCormick Student Village,41.835501,-87.624528
-McCormick Tribune Campus Center,41.835385,-87.626081
+MTCC,41.835385,-87.626081
 Morton Park,41.836988,-87.628348
 Perlstein Hall,41.835245,-87.627157
 Phi Kappa Sigma,41.833039,-87.624164

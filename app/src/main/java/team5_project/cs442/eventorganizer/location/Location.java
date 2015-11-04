@@ -54,8 +54,8 @@ public class Location {
         this.mLongitude = mLongitude;
     }
 
-    public boolean setEvents(List<Event> events) {
-
+    public boolean setEvents(List<Event> _events) {
+        events = _events;
         return (this.events == null) ? false : true;
     }
 

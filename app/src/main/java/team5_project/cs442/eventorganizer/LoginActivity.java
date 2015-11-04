@@ -263,6 +263,7 @@ public class LoginActivity extends AppCompatActivity implements
             // Show the signed-in UI
             //showSignedInUI();
             Intent mapIntent = new Intent(this, MapsActivity.class);
+            mapIntent.putExtra("email", currentAccount);
             startActivity(mapIntent);
             finish();
 
