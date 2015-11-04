@@ -250,6 +250,9 @@ public class LoginActivity extends AppCompatActivity implements
         ((TextView) findViewById(R.id.email)).setText(currentAccount);
         Matcher matcher = email_address.matcher(currentAccount);
         boolean matchFound = matcher.matches();
+
+        // To test w/ my roomate Phone who is not IIT student
+
         if (!matchFound) {
             Toast.makeText(getApplicationContext(), "You ENTERED AN INVALID EMAIL(Use HAWK id)", Toast.LENGTH_LONG).show();
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);

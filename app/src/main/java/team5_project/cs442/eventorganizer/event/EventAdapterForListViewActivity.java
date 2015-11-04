@@ -1,7 +1,6 @@
-package team5_project.cs442.eventorganizer.location;
+package team5_project.cs442.eventorganizer.event;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,22 +8,21 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.List;
 
 import team5_project.cs442.eventorganizer.R;
-import team5_project.cs442.eventorganizer.eventCreator.Event;
-import team5_project.cs442.eventorganizer.eventCreator.EventDetailActivity;
 
 /**
  * Created by sangwon on 10/17/15.
  */
-public class EventAdapter extends ArrayAdapter<Event> {
+public class EventAdapterForListViewActivity extends ArrayAdapter<Event> implements Serializable {
 
-    int resource;
+    private int resource;
 
-    public EventAdapter(Context context,
-                        int resource,
-                        List<Event> events) {
+    public EventAdapterForListViewActivity(Context context,
+                                           int resource,
+                                           List<Event> events) {
         super(context, resource, events);
         this.resource = resource;
     }
@@ -48,8 +46,8 @@ public class EventAdapter extends ArrayAdapter<Event> {
             event_view = (LinearLayout) convertView;
         }
 
-        TextView event_name_text = (TextView) event_view.findViewById(R.id.event_name);
-        TextView event_time_text = (TextView) event_view.findViewById(R.id.event_start_time);
+        TextView event_name_text = (TextView) event_view.findViewById(R.id.event_name_info);
+        TextView event_time_text = (TextView) event_view.findViewById(R.id.event_start_time_info);
 
         event_name_text.setText(event_name);
         event_time_text.setText(event_start_time);
@@ -57,5 +55,6 @@ public class EventAdapter extends ArrayAdapter<Event> {
 
         return event_view;
     }
-
 }
+
+

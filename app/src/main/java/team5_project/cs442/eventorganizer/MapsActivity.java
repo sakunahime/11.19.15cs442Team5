@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,15 +20,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import team5_project.cs442.eventorganizer.database.Database;
-import team5_project.cs442.eventorganizer.eventCreator.Event;
-import team5_project.cs442.eventorganizer.eventCreator.EventDetailActivity;
-import team5_project.cs442.eventorganizer.location.EventAdapter;
-import team5_project.cs442.eventorganizer.location.EventChecker;
+import team5_project.cs442.eventorganizer.event.Event;
+import team5_project.cs442.eventorganizer.event.EventListViewActivity;
+import team5_project.cs442.eventorganizer.event.EventAdapterForEventInfoWindow;
+import team5_project.cs442.eventorganizer.event.EventChecker;
 import team5_project.cs442.eventorganizer.location.LocationLoader;
 
 public class MapsActivity extends FragmentActivity {
@@ -37,9 +37,8 @@ public class MapsActivity extends FragmentActivity {
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LocationLoader locationLoader;
     private List<team5_project.cs442.eventorganizer.location.Location> locations;
-    private String email;
+    public static String email;
     private Map<Marker, List<Event>> eventsByMarker;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,27 +50,6 @@ public class MapsActivity extends FragmentActivity {
         locationLoader = new LocationLoader();
         eventsByMarker = new HashMap<Marker, List<Event>>();
         locations = locationLoader.getLocation();
-
-        // Temp
-        /**
-         Event temp = new Event(1, "Test1", "MTCC", new Date("11/2/2015 20:00"), new Date("11/2/2015 21:00"), "Test", "Sangwon", email, 0d);
-         Event temp2 = new Event(2, "Test2", "IIT Tower", new Date("11/2/2015 19:00"), new Date("11/2/2015 21:00"), "Test2", "Sangwon2", email, 10d);
-
-
-         for (team5_project.cs442.eventorganizer.location.Location location : locations) {
-         if (location.getmLocation().equals(temp.getmEventLocation())) {
-         Log.d(" Test1: ", "Added");
-         location.addEvent(temp);
-
-         }
-         if (location.getmLocation().equals(temp2.getmEventLocation())) {
-         Log.d(" Test1: ", "Added");
-         location.addEvent(temp2);
-
-         }
-         }
-         // Temp end
-         */
 
         MapsInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_maps);
@@ -109,7 +87,6 @@ public class MapsActivity extends FragmentActivity {
             // Check if we were successful in obtaining the map.
 
             if (mMap != null) {
-                setUpMap();
                 CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(41.835454, -87.62587));
                 CameraUpdate zoom = CameraUpdateFactory.zoomTo(16);
                 mMap.moveCamera(center);
@@ -124,7 +101,6 @@ public class MapsActivity extends FragmentActivity {
                         mMap.animateCamera(zoom);
                     }
                 });
-
 
             } else {
                 Toast.makeText(getApplicationContext(), "Unable to create Maps", Toast.LENGTH_SHORT).show();
@@ -142,16 +118,15 @@ public class MapsActivity extends FragmentActivity {
         for (team5_project.cs442.eventorganizer.location.Location location : locations) {
             List<Event> events = Database.readList(Database.TAG_LOC, location.getmLocation());
             if (events.size() != 0) {
+                Log.d("Loaded Size:", location.getmLocation() + ":" + events.size());
                 location.setEvents(events);
             }
         }
-
         plotMarkers(locations);
     }
 
     private void plotMarkers(List<team5_project.cs442.eventorganizer.location.Location> locations) {
         if (locations.size() > 0) {
-            Log.d("Has Events Size by loc:", String.valueOf(locations.size()));
             for (team5_project.cs442.eventorganizer.location.Location location : locations) {
                 if (location.getEventsCounter() != 0) {
                     // Create user marker with custom icon and other options
@@ -168,23 +143,28 @@ public class MapsActivity extends FragmentActivity {
                     eventsByMarker.put(currentMarker, location.getEvents());
                     mMap.setInfoWindowAdapter(new EventInfoWindowAdapter());
 
+
+                    mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener()
+                    {
+                        @Override
+                        public void onInfoWindowClick(Marker marker) {
+                            Intent i = new Intent(getApplicationContext(), EventListViewActivity.class);
+                            List<Event> passEvents = eventsByMarker.get(marker);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("Events", (Serializable) passEvents);
+                            i.putExtras(bundle);
+                            startActivity(i);
+                        }
+
+                    });
+
                 }
             }
         }
     }
 
-    /**
-     * This is where we can add markers or lines, add listeners or move the camera. In this case, we
-     * just add a marker near Africa.
-     * <p/>
-     * This should only be called once and when we are sure that {@link #mMap} is not null.
-     */
-    private void setUpMap() {
-        Log.d("Map Initializer : ", "Intialized with IIT MTCC");
-    }
-
-
     public class EventInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+
         public EventInfoWindowAdapter() {
         }
 
@@ -195,25 +175,13 @@ public class MapsActivity extends FragmentActivity {
 
         @Override
         public View getInfoContents(Marker marker) {
-            marker.setDraggable(true);
             View v = getLayoutInflater().inflate(R.layout.flag, null);
             ListView listV = (ListView) v.findViewById(R.id.flag_list_view);
-            v.setClickable(true);
-            listV.setClickable(true);
             final List<Event> events = eventsByMarker.get(marker);
             Log.d("Marker & Size:", marker.getTitle() + ":" + String.valueOf(events.size()));
             int resID = R.layout.event_detail_in_flag;
-            final EventAdapter eventAdapter = new EventAdapter(v.getContext(), resID, events);
-            listV.setAdapter(eventAdapter);
-
-            listV.setOnItemClickListener(new ListView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent i = new Intent(getBaseContext(), EventDetailActivity.class);
-                    i.putExtra("Event", events.get(position));
-                    startActivity(i);
-                }
-            });
-
+            EventAdapterForEventInfoWindow eventAdapterForEventInfoWindow = new EventAdapterForEventInfoWindow(v.getContext(), resID, events);
+            listV.setAdapter(eventAdapterForEventInfoWindow);
             return v;
         }
     }

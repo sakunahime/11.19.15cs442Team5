@@ -5,7 +5,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import java.util.ArrayList;
 import java.util.List;
 
-import team5_project.cs442.eventorganizer.eventCreator.Event;
+import team5_project.cs442.eventorganizer.event.Event;
 
 /**
  * Created by sangwon on 10/26/15.

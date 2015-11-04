@@ -1,4 +1,4 @@
-package team5_project.cs442.eventorganizer.eventCreator;
+package team5_project.cs442.eventorganizer.event;
 
 import java.io.Serializable;
 import java.util.Date;

@@ -12,7 +12,7 @@ import java.util.List;
 
 import org.json.JSONArray;
 
-import team5_project.cs442.eventorganizer.eventCreator.Event;
+import team5_project.cs442.eventorganizer.event.Event;
 
 /**
  * Created by sangwon on 11/3/15.

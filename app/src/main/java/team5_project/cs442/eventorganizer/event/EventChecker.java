@@ -1,4 +1,4 @@
-package team5_project.cs442.eventorganizer.location;
+package team5_project.cs442.eventorganizer.event;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;

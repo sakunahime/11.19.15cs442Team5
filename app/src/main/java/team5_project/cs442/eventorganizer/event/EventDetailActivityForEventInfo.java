@@ -1,4 +1,4 @@
-package team5_project.cs442.eventorganizer.eventCreator;
+package team5_project.cs442.eventorganizer.event;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,7 +12,7 @@ import team5_project.cs442.eventorganizer.R;
 /**
  * Created by sangwon on 10/23/15.
  */
-public class EventDetailActivity extends Activity {
+public class EventDetailActivityForEventInfo extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
