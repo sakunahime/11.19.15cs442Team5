@@ -127,10 +127,7 @@ public class MapsActivity extends BaseActivity {
 
         for (team5_project.cs442.eventorganizer.location.Location location : locations) {
             List<Event> events = Database.readList(Database.TAG_LOC, location.getmLocation());
-            if (events.size() != 0) {
-                Log.d("Loaded Size:", location.getmLocation() + ":" + events.size());
-                location.setEvents(events);
-            }
+            location.setEvents(events);
         }
         mMap.clear();
         plotMarkers(locations);
@@ -149,21 +146,21 @@ public class MapsActivity extends BaseActivity {
                     Event event = location.getEvents().get(0);
                     BitmapDescriptor icon = EventChecker.eventChecker(event.getmEventStartTime(), event.getmEventEndTime());
                     markerOption.icon(icon);
+                    markerOption.title(location.getmLocation());
                     Marker currentMarker = mMap.addMarker(markerOption);
                     currentMarker.setTitle(location.getmLocation());
                     eventsByMarker.put(currentMarker, location.getEvents());
                     mMap.setInfoWindowAdapter(new EventInfoWindowAdapter());
 
-                    final String loc = location.getmLocation();
                     mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener()
                     {
                         @Override
                         public void onInfoWindowClick(Marker marker) {
-                            showListView(Database.TAG_LOC, loc);
+                            showListView(Database.TAG_LOC, marker.getTitle());
                         }
-
                     });
 
+                    //if (location.getmLocation().equals("Carman Hall")) Log.d("Carman?",String.valueOf(location.getEventsCounter()));
                 }
             }
         }

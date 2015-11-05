@@ -38,7 +38,9 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
     private EditText mEditDesc;
     private EditText mEditHost;
     private EditText mEditCost;
+
     private Button mBtnUpdate;
+    private Button mBtnDelete;
 
     private DatePickerDialog mStartDateDialog;
     private TimePickerDialog mStartTimeDialog;
@@ -68,6 +70,7 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
         mEditHost = (EditText)findViewById(R.id.editUpdateHost);
         mEditCost = (EditText)findViewById(R.id.editUpdateCost);
         mBtnUpdate = (Button)findViewById(R.id.btnUpdate);
+        mBtnDelete = (Button)findViewById(R.id.btnDelete);
 
         mEditName.setText(mEvent.getmEventName());
         initLocation();
@@ -83,6 +86,7 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
         if (mEvent.getmEventCreator().equals(email)) {
             initEditDate();
             mBtnUpdate.setOnClickListener(this);
+            mBtnDelete.setOnClickListener(this);
         } else {
             mEditName.setEnabled(false);
             mSpinnerLoc.setEnabled(false);
@@ -94,6 +98,7 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
             mEditHost.setEnabled(false);
             mEditCost.setEnabled(false);
             mBtnUpdate.setEnabled(false);
+            mBtnDelete.setEnabled(false);
         }
     }
 
@@ -109,6 +114,9 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
             mEndTimeDialog.show();
         } else if (v == mBtnUpdate) {
             updateEvent();
+        } else if (v == mBtnDelete) {
+            Database.delete(mEvent.getmEventId());
+            finish();
         }
     }
 

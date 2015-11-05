@@ -6,26 +6,27 @@ import java.io.Serializable;
  * Created by Tae Kyong Han on 11/5/2015.
  */
 public class Tuple implements Serializable {
-    private String key;
-    private String value;
+    private String mKey;
+    private String mValue;
 
     public Tuple(String key, String value) {
-
+        mKey = key;
+        mValue = value;
     }
 
     public String getKey() {
-        return key;
+        return mKey;
     }
 
     public void setKey(String key) {
-        this.key = key;
+        this.mKey = key;
     }
 
     public String getValue() {
-        return value;
+        return mValue;
     }
 
     public void setValue(String value) {
-        this.value = value;
+        this.mValue = value;
     }
 }

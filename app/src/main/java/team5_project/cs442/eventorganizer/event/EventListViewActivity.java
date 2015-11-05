@@ -40,6 +40,8 @@ public class EventListViewActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         int resID = R.layout.event_info_list_view;
+        Log.d("Key: ", mTuple.getKey());
+        Log.d("Value: ", mTuple.getValue());
         final List<Event> events = Database.readList(mTuple.getKey(), mTuple.getValue());
         EventAdapterForListViewActivity eventAdapterForEventInfo = new EventAdapterForListViewActivity(this, resID, events);
 
