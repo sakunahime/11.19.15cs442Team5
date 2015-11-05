@@ -116,7 +116,7 @@ public class MapsActivity extends BaseActivity {
                 Toast.makeText(getApplicationContext(), "Unable to create Maps", Toast.LENGTH_SHORT).show();
             }
         }
-        mMap.setMyLocationEnabled(true);
+        mMap.setMyLocationEnabled(false);
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
