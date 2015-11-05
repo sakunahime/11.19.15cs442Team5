@@ -56,7 +56,7 @@ public class Location {
 
     public boolean setEvents(List<Event> _events) {
         events = _events;
-        return (this.events == null) ? false : true;
+        return this.events != null;
     }
 
     public boolean addEvent(Event event) {

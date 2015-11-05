@@ -3,10 +3,11 @@ package team5_project.cs442.eventorganizer;
 import android.content.Intent;
 import android.location.Location;
 import android.os.StrictMode;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.webkit.CookieManager;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -32,12 +33,11 @@ import team5_project.cs442.eventorganizer.event.EventAdapterForEventInfoWindow;
 import team5_project.cs442.eventorganizer.event.EventChecker;
 import team5_project.cs442.eventorganizer.location.LocationLoader;
 
-public class MapsActivity extends FragmentActivity {
+public class MapsActivity extends BaseActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LocationLoader locationLoader;
     private List<team5_project.cs442.eventorganizer.location.Location> locations;
-    public static String email;
     private Map<Marker, List<Event>> eventsByMarker;
 
     @Override
@@ -60,6 +60,16 @@ public class MapsActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menuMap:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 
@@ -122,6 +132,7 @@ public class MapsActivity extends FragmentActivity {
                 location.setEvents(events);
             }
         }
+        mMap.clear();
         plotMarkers(locations);
     }
 
@@ -143,17 +154,12 @@ public class MapsActivity extends FragmentActivity {
                     eventsByMarker.put(currentMarker, location.getEvents());
                     mMap.setInfoWindowAdapter(new EventInfoWindowAdapter());
 
-
+                    final String loc = location.getmLocation();
                     mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener()
                     {
                         @Override
                         public void onInfoWindowClick(Marker marker) {
-                            Intent i = new Intent(getApplicationContext(), EventListViewActivity.class);
-                            List<Event> passEvents = eventsByMarker.get(marker);
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("Events", (Serializable) passEvents);
-                            i.putExtras(bundle);
-                            startActivity(i);
+                            showListView(Database.TAG_LOC, loc);
                         }
 
                     });
@@ -185,7 +191,6 @@ public class MapsActivity extends FragmentActivity {
             return v;
         }
     }
-
 }
 
 

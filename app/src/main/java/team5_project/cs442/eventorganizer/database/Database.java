@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -67,6 +68,8 @@ public class Database {
 
             list = new ArrayList<Event>();
 
+            Calendar cal = Calendar.getInstance();
+
             for (int iObj = 0; iObj < jsli.length(); ++iObj) {
                 JSONArray jsev = jsli.getJSONArray(iObj);
 
@@ -79,6 +82,10 @@ public class Database {
                 String ehost = jsev.getString(KEY_HOST);
                 String eemail = jsev.getString(KEY_EMAIL);
                 double ecost = jsev.getDouble(KEY_COST);
+
+                //if (eend < cal.getTimeInMillis()) {
+                //    continue;
+                //}
 
                 Event event = new Event(eid, ename, eloc, new Date(estart), new Date(eend), edesc, ehost, eemail, ecost);
                 list.add(event);

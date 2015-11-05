@@ -29,19 +29,29 @@
 
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/Theme.AppCompat.Light">
+            android:theme="@style/Theme.AppCompat.Light" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MapsActivity" >
+
+        <activity android:name=".MapsActivity"
+            android:launchMode="singleInstance">
         </activity>
+
         <activity android:name=".event.EventListViewActivity" >
         </activity>
+
         EventListViewActivity
         <activity android:name=".event.EventDetailActivityForEventInfo" >
+        </activity>
+
+        <activity android:name=".event.CreateActivity" >
+        </activity>
+
+        <activity android:name=".event.UpdateActivity" >
         </activity>
 
     </application>

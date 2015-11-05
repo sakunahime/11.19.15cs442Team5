@@ -13,6 +13,24 @@ import java.util.List;
  */
 public class LocationLoader implements GetLocations {
 
+    public static List<String> getLocationNames() {
+        String locationFileName = "res/raw/app_iit_locations.txt";
+        List<String> namelist = new ArrayList<String>();
+        try {
+            InputStream inputStream = LocationLoader.class.getClassLoader().getResourceAsStream(locationFileName);
+            BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+            while ((line = r.readLine()) != null) {
+                String[] var = line.split(",");
+                String name = var[0];
+                namelist.add(name);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return namelist;
+    }
+
     private List<Location> locations;
 
     private String locationFileName;

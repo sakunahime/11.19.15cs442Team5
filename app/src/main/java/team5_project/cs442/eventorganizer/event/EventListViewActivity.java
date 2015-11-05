@@ -10,36 +10,47 @@ import android.widget.ListView;
 
 import java.util.List;
 
+import team5_project.cs442.eventorganizer.BaseActivity;
 import team5_project.cs442.eventorganizer.R;
+import team5_project.cs442.eventorganizer.database.Database;
 
 /**
  * Created by sangwon on 10/23/15.
  */
-public class EventListViewActivity extends Activity {
+public class EventListViewActivity extends BaseActivity {
 
-    public List<Event> events;
+    private Tuple mTuple;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.flag_for_activity);
-        ListView list = (ListView) findViewById(R.id.flag_list_view_activity);
 
-        int resID = R.layout.event_info_list_view;
         //Intent intent = getIntent();
         Bundle bundle = getIntent().getExtras();
         Log.d("Listvew acti:", String.valueOf(bundle.isEmpty()));
         //EventAdapter infoAdapter = (EventAdapter) bundle.getSerializable("EventAdapter");
 
-        events = (List<Event>) bundle.getSerializable("Events");
+        mTuple = (Tuple) bundle.getSerializable("Tuple");
+
+        listInstance = this;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int resID = R.layout.event_info_list_view;
+        final List<Event> events = Database.readList(mTuple.getKey(), mTuple.getValue());
         EventAdapterForListViewActivity eventAdapterForEventInfo = new EventAdapterForListViewActivity(this, resID, events);
+
+        ListView list = (ListView) findViewById(R.id.flag_list_view_activity);
         list.setAdapter(eventAdapterForEventInfo);
 
         list.setOnItemClickListener(new ListView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(getBaseContext(), EventDetailActivityForEventInfo.class);
+                Intent i = new Intent(getBaseContext(), UpdateActivity.class);
                 Event event = events.get(position);
                 i.putExtra("Event", event);
                 startActivity(i);
@@ -47,6 +58,17 @@ public class EventListViewActivity extends Activity {
 
         });
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+     public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
     }
 
 }

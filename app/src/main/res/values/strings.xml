@@ -36,6 +36,9 @@
 
     <!-- Rationale for asking for Contacts -->
     <string name="contacts_permission_rationale">Contacts access is needed in order to retrieve your email address.</string>
+    <string name="create">Create</string>
+    <string name="cancel">Cancel</string>
+    <string name="event_cost">Cost</string>
 
 
 </resources>

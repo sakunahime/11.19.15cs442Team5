@@ -7,12 +7,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import team5_project.cs442.eventorganizer.BaseActivity;
 import team5_project.cs442.eventorganizer.R;
 
 /**
  * Created by sangwon on 10/23/15.
  */
-public class EventDetailActivityForEventInfo extends Activity {
+public class EventDetailActivityForEventInfo extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class EventDetailActivityForEventInfo extends Activity {
 
         // Here we need to compare seesion w/ event Creator to disable all edit texts.
         // For now.. all disabled..
+
         eventName.setEnabled(false);
         eventLocation.setEnabled(false);
         eventStartTime.setEnabled(false);
@@ -61,6 +63,12 @@ public class EventDetailActivityForEventInfo extends Activity {
         });
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
     }
 
 }
