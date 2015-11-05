@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -60,17 +61,17 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
         Intent intent = getIntent();
         mEvent = (Event) intent.getSerializableExtra("Event");
 
-        mEditName = (EditText)findViewById(R.id.editUpdateName);
-        mSpinnerLoc = (Spinner)findViewById(R.id.spinnerUpdateLoc);
-        mTextStartDate = (TextView)findViewById(R.id.editUpdateStartDate);
-        mTextStartTime = (TextView)findViewById(R.id.editUpdateStartTime);
-        mTextEndDate = (TextView)findViewById(R.id.editUpdateEndDate);
-        mTextEndTime = (TextView)findViewById(R.id.editUpdateEndTime);
-        mEditDesc = (EditText)findViewById(R.id.editUpdateDesc);
-        mEditHost = (EditText)findViewById(R.id.editUpdateHost);
-        mEditCost = (EditText)findViewById(R.id.editUpdateCost);
-        mBtnUpdate = (Button)findViewById(R.id.btnUpdate);
-        mBtnDelete = (Button)findViewById(R.id.btnDelete);
+        mEditName = (EditText) findViewById(R.id.editUpdateName);
+        mSpinnerLoc = (Spinner) findViewById(R.id.spinnerUpdateLoc);
+        mTextStartDate = (TextView) findViewById(R.id.editUpdateStartDate);
+        mTextStartTime = (TextView) findViewById(R.id.editUpdateStartTime);
+        mTextEndDate = (TextView) findViewById(R.id.editUpdateEndDate);
+        mTextEndTime = (TextView) findViewById(R.id.editUpdateEndTime);
+        mEditDesc = (EditText) findViewById(R.id.editUpdateDesc);
+        mEditHost = (EditText) findViewById(R.id.editUpdateHost);
+        mEditCost = (EditText) findViewById(R.id.editUpdateCost);
+        mBtnUpdate = (Button) findViewById(R.id.btnUpdate);
+        mBtnDelete = (Button) findViewById(R.id.btnDelete);
 
         mEditName.setText(mEvent.getmEventName());
         initLocation();
@@ -79,7 +80,7 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
         mEditHost.setText(mEvent.getmHost());
         mEditCost.setText(String.valueOf(mEvent.getmCost()));
 
-        EditText mEditEmail = (EditText)findViewById(R.id.editUpdateEmail);
+        EditText mEditEmail = (EditText) findViewById(R.id.editUpdateEmail);
         mEditEmail.setText(mEvent.getmEventCreator());
         mEditEmail.setEnabled(false);
 
@@ -88,6 +89,7 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
             mBtnUpdate.setOnClickListener(this);
             mBtnDelete.setOnClickListener(this);
         } else {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
             mEditName.setEnabled(false);
             mSpinnerLoc.setEnabled(false);
             mTextStartDate.setEnabled(false);
@@ -99,6 +101,8 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
             mEditCost.setEnabled(false);
             mBtnUpdate.setEnabled(false);
             mBtnDelete.setEnabled(false);
+            mBtnUpdate.setVisibility(View.GONE);
+            mBtnDelete.setVisibility(View.GONE);
         }
     }
 
@@ -145,7 +149,11 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
         mEvent.setmEventEndTime(mEndCal.getTime());
         mEvent.setmDescription(mEditDesc.getText().toString());
         mEvent.setmHost(mEditHost.getText().toString());
-        mEvent.setmCost(Double.parseDouble(mEditCost.getText().toString()));
+        if (mEditCost.getText().toString() != null) {
+            mEvent.setmCost(Double.parseDouble(mEditCost.getText().toString()));
+        } else {
+            mEvent.setmCost(0.0d);
+        }
 
         Database.update(mEvent);
 

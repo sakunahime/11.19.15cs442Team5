@@ -1,9 +1,7 @@
 package team5_project.cs442.eventorganizer.event;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -28,9 +26,7 @@ public class EventListViewActivity extends BaseActivity {
 
         //Intent intent = getIntent();
         Bundle bundle = getIntent().getExtras();
-        Log.d("Listvew acti:", String.valueOf(bundle.isEmpty()));
         //EventAdapter infoAdapter = (EventAdapter) bundle.getSerializable("EventAdapter");
-
         mTuple = (Tuple) bundle.getSerializable("Tuple");
 
         listInstance = this;
@@ -40,8 +36,6 @@ public class EventListViewActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         int resID = R.layout.event_info_list_view;
-        Log.d("Key: ", mTuple.getKey());
-        Log.d("Value: ", mTuple.getValue());
         final List<Event> events = Database.readList(mTuple.getKey(), mTuple.getValue());
         EventAdapterForListViewActivity eventAdapterForEventInfo = new EventAdapterForListViewActivity(this, resID, events);
 
@@ -68,7 +62,7 @@ public class EventListViewActivity extends BaseActivity {
     }
 
     @Override
-     public void onBackPressed() {
+    public void onBackPressed() {
         super.onBackPressed();
         this.finish();
     }

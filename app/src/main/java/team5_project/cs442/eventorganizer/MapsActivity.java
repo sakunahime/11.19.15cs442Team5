@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.CookieManager;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,16 +20,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import team5_project.cs442.eventorganizer.database.Database;
 import team5_project.cs442.eventorganizer.event.Event;
-import team5_project.cs442.eventorganizer.event.EventListViewActivity;
 import team5_project.cs442.eventorganizer.event.EventAdapterForEventInfoWindow;
-import team5_project.cs442.eventorganizer.event.EventChecker;
+import team5_project.cs442.eventorganizer.event.EventTimeChecker;
 import team5_project.cs442.eventorganizer.location.LocationLoader;
 
 public class MapsActivity extends BaseActivity {
@@ -144,7 +141,7 @@ public class MapsActivity extends BaseActivity {
                     // by the first event time line, we need to update location icon color..
                     // we assume that the first object is most recent event.
                     Event event = location.getEvents().get(0);
-                    BitmapDescriptor icon = EventChecker.eventChecker(event.getmEventStartTime(), event.getmEventEndTime());
+                    BitmapDescriptor icon = EventTimeChecker.eventChecker(event.getmEventStartTime(), event.getmEventEndTime());
                     markerOption.icon(icon);
                     markerOption.title(location.getmLocation());
                     Marker currentMarker = mMap.addMarker(markerOption);

@@ -11,45 +11,57 @@ import java.util.TimeZone;
 /**
  * Created by sangwon on 10/26/15.
  */
-public class EventChecker {
+public class EventTimeChecker {
 
     private static DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
     private static TimeZone obj = TimeZone.getTimeZone("CST");
 
+    private static String _currentTime;
+
+    private static Date currentTime;
+
+
     public static BitmapDescriptor eventChecker(final Date _startEvent, final Date _endEvent) {
         /**
          * We can use this method to differenciate for time..
          */
-        // formatter.setTimeZone(obj);
-        String _currentTime = EventChecker.formatter.format(new Date());
+        _currentTime = EventTimeChecker.formatter.format(new Date());
+        currentTime = new Date(_currentTime);
 
-        Date currentTime = new Date(_currentTime);
-
-        // currentTime = Main.formatter.parse(Main.currentdate.getTime().toString());
-
-        System.out.println(currentTime.toString() + " : " + _startEvent.toString() + " : " + _endEvent.toString());
         long diff = _startEvent.getTime() - currentTime.getTime();
 
-        // String currentDateTime = formatter.format(currentdate.getTime());
-        // String startEvent = formatter.format(_startEvent);
-        // String endEvent = formatter.format(_endEvent);
-
         int diffhours = (int) (diff / (60 * 60 * 1000));
-        System.out.println(diffhours);
-		/*
-		 * Assign green flag when current time is the same as event's start time, or between the event's start and end
-		 * time. Assign yellow flag when current time is 2 hours or less away from event's start time. Assign grey flag
-		 * when current time is more than 2 hours away from event time.
-		 */
-        if ( currentTime.equals(_startEvent) || (currentTime.after(_startEvent) && currentTime.before(_endEvent)) ) {
+
+        if (currentTime.equals(_startEvent) || (currentTime.after(_startEvent) && currentTime.before(_endEvent))) {
             return BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
         }
-        if ( (diffhours <= 2) && (diffhours > 0) ) {
+        if ((diffhours <= 2) && (diffhours > 0)) {
             return BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW);
         } else {
             return BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET);
         }
+    }
+
+    public static boolean isEventPassed(final Date _startEvent, final Date _endEvent) {
+        /**
+         * We can use this method to differenciate for time..
+         */
+        _currentTime = EventTimeChecker.formatter.format(new Date());
+        currentTime = new Date(_currentTime);
+
+        long diff = _startEvent.getTime() - currentTime.getTime();
+
+        int diffhours = (int) (diff / (60 * 60 * 1000));
+
+        if ((diffhours > 0)) {
+            return false; //  Not come yet
+        }
+        if ((currentTime.after(_startEvent) && currentTime.before(_endEvent))) {
+            return false; // Event is on going.
+        }
+        return true; //  Event passed, should filter
+
     }
 
 }

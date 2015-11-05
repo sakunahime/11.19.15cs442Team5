@@ -14,6 +14,7 @@ import java.util.List;
 import org.json.JSONArray;
 
 import team5_project.cs442.eventorganizer.event.Event;
+import team5_project.cs442.eventorganizer.event.EventTimeChecker;
 
 /**
  * Created by sangwon on 11/3/15.
@@ -83,12 +84,10 @@ public class Database {
                 String eemail = jsev.getString(KEY_EMAIL);
                 double ecost = jsev.getDouble(KEY_COST);
 
-                //if (eend < cal.getTimeInMillis()) {
-                //    continue;
-                //}
-
-                Event event = new Event(eid, ename, eloc, new Date(estart), new Date(eend), edesc, ehost, eemail, ecost);
-                list.add(event);
+                if (!EventTimeChecker.isEventPassed(new Date(estart), new Date(eend))) {
+                    Event event = new Event(eid, ename, eloc, new Date(estart), new Date(eend), edesc, ehost, eemail, ecost);
+                    list.add(event);
+                }
             }
 
         } catch (Exception e) {

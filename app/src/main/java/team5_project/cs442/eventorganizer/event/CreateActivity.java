@@ -123,7 +123,12 @@ public class CreateActivity extends BaseActivity implements View.OnClickListener
         Date end = mEndCal.getTime();
         String desc = mEditDesc.getText().toString();
         String host = mEditHost.getText().toString();
-        double cost = Double.parseDouble(mEditCost.getText().toString());
+        double cost;
+        if (mEditCost.getText().toString() != null) {
+            cost = Double.parseDouble(mEditCost.getText().toString());
+        } else {
+            cost = 0.0d;
+        }
 
         Event event = new Event(0, name, loc, start, end, desc, host, email, cost);
         Database.insert(event);
