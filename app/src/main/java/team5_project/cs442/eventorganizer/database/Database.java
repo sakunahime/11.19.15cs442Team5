@@ -20,7 +20,7 @@ import team5_project.cs442.eventorganizer.event.EventTimeChecker;
  * Created by sangwon on 11/3/15.
  */
 public class Database {
-    public static final String SERVER = "107.206.120.195";
+    public static final String SERVER = "iitorganizer.16mb.com";
 
     public static final int KEY_ID = 0;
     public static final int KEY_NAME = 1;

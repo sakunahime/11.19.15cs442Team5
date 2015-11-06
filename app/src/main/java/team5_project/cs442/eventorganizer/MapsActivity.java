@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,12 +123,20 @@ public class MapsActivity extends BaseActivity {
 
     public void loadAllEvents() {
 
+        List<Event> allevents = Database.readList();
+
         for (team5_project.cs442.eventorganizer.location.Location location : locations) {
-            List<Event> events = Database.readList(Database.TAG_LOC, location.getmLocation());
+            String loc = location.getmLocation();
+            List<Event> events = new ArrayList<Event>();
+            for (Event e : allevents) {
+                if (e.getmEventLocation().equals(loc))
+                    events.add(e);
+            }
             location.setEvents(events);
         }
         mMap.clear();
         plotMarkers(locations);
+
     }
 
     private void plotMarkers(List<team5_project.cs442.eventorganizer.location.Location> locations) {
