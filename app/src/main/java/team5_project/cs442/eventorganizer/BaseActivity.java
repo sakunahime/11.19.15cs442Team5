@@ -46,9 +46,8 @@ public class BaseActivity extends FragmentActivity {
                 }
                 showListView(Database.TAG_EMAIL, email);
                 return true;
-            case R.id.menuOut:
-                finish();
-                return true;
+            //case R.id.menuOut:
+              //  return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

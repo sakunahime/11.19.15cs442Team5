@@ -13,10 +13,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import team5_project.cs442.eventorganizer.BaseActivity;
 import team5_project.cs442.eventorganizer.R;
@@ -53,7 +55,6 @@ public class CreateActivity extends BaseActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
-
         mEditName = (EditText)findViewById(R.id.editCreateName);
 
         initLocationSpinner();
@@ -119,18 +120,27 @@ public class CreateActivity extends BaseActivity implements View.OnClickListener
     private void createEvent() {
         String name = mEditName.getText().toString();
         String loc = mSpinnerLoc.getSelectedItem().toString();
+
+
         Date start = mStartCal.getTime();
+        String sDate = EventTimeChecker.formatter.format(start);
+        Date startDate = new Date(sDate);
+
         Date end = mEndCal.getTime();
+        String eDate = EventTimeChecker.formatter.format(end);
+        Date endDate = new Date(eDate);
+
         String desc = mEditDesc.getText().toString();
         String host = mEditHost.getText().toString();
+        String _cost = mEditCost.getText().toString();
         double cost;
-        if (mEditCost.getText().toString() != null) {
-            cost = Double.parseDouble(mEditCost.getText().toString());
-        } else {
+        if ((_cost == null) || (_cost.equals("")) || (_cost.length() == 0)) {
             cost = 0.0d;
+        } else {
+            cost = Double.parseDouble(_cost);
         }
 
-        Event event = new Event(0, name, loc, start, end, desc, host, email, cost);
+        Event event = new Event(0, name, loc, startDate, endDate, desc, host, email, cost);
         Database.insert(event);
 
         finish();
@@ -151,6 +161,8 @@ public class CreateActivity extends BaseActivity implements View.OnClickListener
         mTextStartTime = (TextView)findViewById(R.id.editCreateStartTime);
         mTextEndDate = (TextView)findViewById(R.id.editCreateEndDate);
         mTextEndTime = (TextView)findViewById(R.id.editCreateEndTime);
+
+
 
         mStartCal = Calendar.getInstance();
 

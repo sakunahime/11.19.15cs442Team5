@@ -15,10 +15,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import team5_project.cs442.eventorganizer.BaseActivity;
 import team5_project.cs442.eventorganizer.R;
@@ -145,8 +147,21 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
     private void updateEvent() {
         mEvent.setmEventName(mEditName.getText().toString());
         mEvent.setmEventLocation(mSpinnerLoc.getSelectedItem().toString());
-        mEvent.setmEventStartTime(mStartCal.getTime());
-        mEvent.setmEventEndTime(mEndCal.getTime());
+
+        Date start = mStartCal.getTime();
+        String sDate = EventTimeChecker.formatter.format(start);
+        Date startDate = new Date(sDate);
+
+        mEvent.setmEventStartTime(startDate);
+
+        Date end = mEndCal.getTime();
+        String eDate = EventTimeChecker.formatter.format(end);
+        Date endDate = new Date(eDate);
+
+        mEvent.setmEventEndTime(endDate);
+
+        //mEvent.setmEventStartTime(mStartCal.getTime());
+        //mEvent.setmEventEndTime(mEndCal.getTime());
         mEvent.setmDescription(mEditDesc.getText().toString());
         mEvent.setmHost(mEditHost.getText().toString());
         if (mEditCost.getText().toString() != null) {

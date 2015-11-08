@@ -128,7 +128,9 @@ public class MapsActivity extends BaseActivity {
         for (team5_project.cs442.eventorganizer.location.Location location : locations) {
             String loc = location.getmLocation();
             List<Event> events = new ArrayList<Event>();
+            Log.d("Location", loc);
             for (Event e : allevents) {
+                Log.d("Event", e.getmEventName());
                 if (e.getmEventLocation().equals(loc))
                     events.add(e);
             }

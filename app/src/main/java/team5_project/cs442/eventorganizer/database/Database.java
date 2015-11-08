@@ -1,5 +1,7 @@
 package team5_project.cs442.eventorganizer.database;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -83,7 +85,7 @@ public class Database {
                 String ehost = jsev.getString(KEY_HOST);
                 String eemail = jsev.getString(KEY_EMAIL);
                 double ecost = jsev.getDouble(KEY_COST);
-
+                Log.d("Db", ename + ":" + estart + ":" + eend );
                 if (!EventTimeChecker.isEventPassed(new Date(estart), new Date(eend))) {
                     Event event = new Event(eid, ename, eloc, new Date(estart), new Date(eend), edesc, ehost, eemail, ecost);
                     list.add(event);
