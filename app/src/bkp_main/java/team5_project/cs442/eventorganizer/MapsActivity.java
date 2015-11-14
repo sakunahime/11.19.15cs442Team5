@@ -29,10 +29,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import team5_project.cs442.eventorganizer.activities.LoginActivity;
 import team5_project.cs442.eventorganizer.database.Database;
 import team5_project.cs442.eventorganizer.event.Event;
 import team5_project.cs442.eventorganizer.event.EventAdapterForMyList;
-import team5_project.cs442.eventorganizer.event.EventListViewActivity;
+import team5_project.cs442.eventorganizer.activities.EventListViewActivity;
 import team5_project.cs442.eventorganizer.event.EventAdapterForEventInfoWindow;
 import team5_project.cs442.eventorganizer.event.EventTimeChecker;
 import team5_project.cs442.eventorganizer.event.EventListViewActivityForMine;

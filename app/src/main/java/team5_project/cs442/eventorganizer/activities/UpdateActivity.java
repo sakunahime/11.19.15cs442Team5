@@ -1,4 +1,4 @@
-package team5_project.cs442.eventorganizer.event;
+package team5_project.cs442.eventorganizer.activities;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -15,16 +15,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import java.text.DateFormat;
+import com.google.android.gms.plus.Plus;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
-import team5_project.cs442.eventorganizer.BaseActivity;
 import team5_project.cs442.eventorganizer.R;
 import team5_project.cs442.eventorganizer.database.Database;
+import team5_project.cs442.eventorganizer.event.Event;
+import team5_project.cs442.eventorganizer.event.EventTimeChecker;
 import team5_project.cs442.eventorganizer.location.LocationLoader;
 
 public class UpdateActivity extends BaseActivity implements View.OnClickListener {
@@ -252,4 +253,21 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
         cal.set(Calendar.MINUTE, minute);
         text.setText(timeformat.format(cal.getTime()));
     }
+
+    /**
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sign_out:
+                Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient);
+                Plus.AccountApi.revokeAccessAndDisconnect(LoginActivity.mGoogleApiClient);
+                LoginActivity.mGoogleApiClient.disconnect();
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    */
+
 }

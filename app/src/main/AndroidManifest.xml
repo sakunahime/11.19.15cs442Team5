@@ -28,8 +28,8 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".LoginActivity"
-            android:theme="@style/Theme.AppCompat.Light" >
+            android:name=".activities.LoginActivity"
+            android:theme="@style/Theme.AppCompat.Light">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,21 +37,21 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MapsActivity"
+        <activity android:name=".activities.MapsActivity"
             android:launchMode="singleInstance">
         </activity>
 
-        <activity android:name=".event.EventListViewActivity" >
+        <activity android:name=".activities.EventListViewActivity" >
         </activity>
 
         EventListViewActivity
         <activity android:name=".event.EventDetailActivityForEventInfo" >
         </activity>
 
-        <activity android:name=".event.CreateActivity" >
+        <activity android:name=".activities.CreateActivity" >
         </activity>
 
-        <activity android:name=".event.UpdateActivity" >
+        <activity android:name=".activities.UpdateActivity" >
         </activity>
 
     </application>

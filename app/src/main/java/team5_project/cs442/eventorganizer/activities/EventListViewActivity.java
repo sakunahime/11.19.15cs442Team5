@@ -1,16 +1,20 @@
-package team5_project.cs442.eventorganizer.event;
+package team5_project.cs442.eventorganizer.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.android.gms.plus.Plus;
+
 import java.util.List;
 
-import team5_project.cs442.eventorganizer.BaseActivity;
 import team5_project.cs442.eventorganizer.R;
 import team5_project.cs442.eventorganizer.database.Database;
+import team5_project.cs442.eventorganizer.event.Event;
+import team5_project.cs442.eventorganizer.event.Tuple;
 
 /**
  * Created by sangwon on 10/23/15.
@@ -66,5 +70,21 @@ public class EventListViewActivity extends BaseActivity {
         super.onBackPressed();
         this.finish();
     }
+
+    /**
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sign_out:
+                Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient);
+                Plus.AccountApi.revokeAccessAndDisconnect(LoginActivity.mGoogleApiClient);
+                LoginActivity.mGoogleApiClient.disconnect();
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    */
 
 }

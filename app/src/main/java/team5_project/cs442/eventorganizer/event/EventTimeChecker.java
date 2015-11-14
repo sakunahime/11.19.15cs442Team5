@@ -28,16 +28,11 @@ public class EventTimeChecker {
     private static double getDiffHours(final Date _startEvent, final Date _endEvent) {
 
         _currentTime = EventTimeChecker.formatter.format(currentdate.getTime());
-        Log.d("CUrrent date:", _currentTime);
-
         currentTime = new Date(_currentTime);
 
-        Log.d("!CUrrent date:", String.valueOf(currentTime));
         long diff = _startEvent.getTime() - currentTime.getTime();
 
-        Log.d("Time Checker", _startEvent.getTime() + ":" +  currentTime.getTime());
         double _diffhours = (diff / (60 * 60 * 1000));
-        Log.d("Checker result", String.valueOf(_diffhours));
         return _diffhours;
     }
 
@@ -70,4 +65,11 @@ public class EventTimeChecker {
 
     }
 
+    public static boolean isStartTimeBiggerThanEndTime(final Date startEvent, final Date endEvent) {
+        long diff =  endEvent.getTime() - startEvent.getTime();
+
+        double diffhours = (diff / (60 * 60 * 1000));
+
+        return (diffhours > 0);
+    }
 }

@@ -1,4 +1,4 @@
-package team5_project.cs442.eventorganizer;
+package team5_project.cs442.eventorganizer.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,19 +7,16 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.android.gms.plus.Plus;
 
+import java.io.Serializable;
+
+import team5_project.cs442.eventorganizer.R;
 import team5_project.cs442.eventorganizer.database.Database;
-import team5_project.cs442.eventorganizer.event.CreateActivity;
-import team5_project.cs442.eventorganizer.event.Event;
-import team5_project.cs442.eventorganizer.event.EventListViewActivity;
 import team5_project.cs442.eventorganizer.event.Tuple;
 
 public class BaseActivity extends FragmentActivity {
-
+    LoginActivity lg = new LoginActivity();
     public static Activity listInstance;
 
     protected static String email;
@@ -46,11 +43,25 @@ public class BaseActivity extends FragmentActivity {
                 }
                 showListView(Database.TAG_EMAIL, email);
                 return true;
-            //case R.id.menuOut:
-              //  return true;
+            case R.id.sign_out:
+                Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient);
+                Plus.AccountApi.revokeAccessAndDisconnect(LoginActivity.mGoogleApiClient);
+                LoginActivity.mGoogleApiClient.disconnect();
+
+                Intent backtoLogin = new Intent(this, LoginActivity.class);
+                backtoLogin.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                backtoLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                backtoLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(backtoLogin);
+                finish();
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    @Override
+    public void onBackPressed()
+    {
+     finish();
     }
 
     public void returnToMap() {

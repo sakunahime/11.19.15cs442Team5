@@ -11,6 +11,7 @@ import android.widget.ListView;
 import java.util.List;
 
 import team5_project.cs442.eventorganizer.R;
+import team5_project.cs442.eventorganizer.activities.EventAdapterForListViewActivity;
 
 /**
  * Created by sangwon on 10/23/15.

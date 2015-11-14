@@ -1,4 +1,4 @@
-package team5_project.cs442.eventorganizer.event;
+package team5_project.cs442.eventorganizer.activities;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import team5_project.cs442.eventorganizer.R;
+import team5_project.cs442.eventorganizer.event.Event;
 
 /**
  * Created by sangwon on 10/17/15.

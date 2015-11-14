@@ -1,11 +1,10 @@
-package team5_project.cs442.eventorganizer;
+package team5_project.cs442.eventorganizer.activities;
 
 import android.content.Intent;
 import android.location.Location;
 import android.os.StrictMode;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -25,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import team5_project.cs442.eventorganizer.R;
 import team5_project.cs442.eventorganizer.database.Database;
 import team5_project.cs442.eventorganizer.event.Event;
 import team5_project.cs442.eventorganizer.event.EventAdapterForEventInfoWindow;
@@ -60,16 +60,20 @@ public class MapsActivity extends BaseActivity {
         setUpMapIfNeeded();
     }
 
+    /**
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menuMap:
+                finish(); //finish Activity.
+                Intent refresh = new Intent(this, MapsActivity.class);
+                startActivity(refresh);//Start the same Activity
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
+    */
 
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
@@ -115,7 +119,7 @@ public class MapsActivity extends BaseActivity {
             }
         }
         mMap.setMyLocationEnabled(false);
-        mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         loadAllEvents();
@@ -130,7 +134,6 @@ public class MapsActivity extends BaseActivity {
             List<Event> events = new ArrayList<Event>();
             Log.d("Location", loc);
             for (Event e : allevents) {
-                Log.d("Event", e.getmEventName());
                 if (e.getmEventLocation().equals(loc))
                     events.add(e);
             }

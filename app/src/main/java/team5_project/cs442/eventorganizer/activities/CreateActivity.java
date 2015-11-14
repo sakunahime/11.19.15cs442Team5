@@ -1,4 +1,4 @@
-package team5_project.cs442.eventorganizer.event;
+package team5_project.cs442.eventorganizer.activities;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -12,18 +12,19 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
-import java.text.DateFormat;
+import com.google.android.gms.plus.Plus;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
-import team5_project.cs442.eventorganizer.BaseActivity;
 import team5_project.cs442.eventorganizer.R;
 import team5_project.cs442.eventorganizer.database.Database;
 import team5_project.cs442.eventorganizer.event.Event;
+import team5_project.cs442.eventorganizer.event.EventTimeChecker;
 import team5_project.cs442.eventorganizer.location.LocationLoader;
 
 public class CreateActivity extends BaseActivity implements View.OnClickListener {
@@ -72,16 +73,6 @@ public class CreateActivity extends BaseActivity implements View.OnClickListener
         mBtnCreate.setOnClickListener(this);
 
         initDateTimePickers();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menuCreate:
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     @Override
@@ -140,10 +131,15 @@ public class CreateActivity extends BaseActivity implements View.OnClickListener
             cost = Double.parseDouble(_cost);
         }
 
-        Event event = new Event(0, name, loc, startDate, endDate, desc, host, email, cost);
-        Database.insert(event);
 
-        finish();
+        if(EventTimeChecker.isStartTimeBiggerThanEndTime(startDate, endDate)) {
+            Event event = new Event(0, name, loc, startDate, endDate, desc, host, email, cost);
+            Database.insert(event);
+
+            finish();
+        } else {
+            Toast.makeText(getApplicationContext(), "Event's END TIME should be later than START TIME!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initLocationSpinner() {
@@ -223,4 +219,22 @@ public class CreateActivity extends BaseActivity implements View.OnClickListener
         cal.set(Calendar.MINUTE, minute);
         text.setText(timeformat.format(cal.getTime()));
     }
+
+    /**
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            //case R.id.menuCreate:
+            //    return true;
+            case R.id.sign_out:
+                Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient);
+                Plus.AccountApi.revokeAccessAndDisconnect(LoginActivity.mGoogleApiClient);
+                LoginActivity.mGoogleApiClient.disconnect();
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    */
 }

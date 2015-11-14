@@ -1,4 +1,4 @@
-package team5_project.cs442.eventorganizer;
+package team5_project.cs442.eventorganizer.activities;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +28,8 @@ import com.google.android.gms.plus.model.people.Person;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import team5_project.cs442.eventorganizer.R;
+
 
 /**
  * Minimal activity demonstrating basic Google Sign-In.
@@ -36,37 +39,37 @@ public class LoginActivity extends AppCompatActivity implements
         ActivityCompat.OnRequestPermissionsResultCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
-    private static final Pattern email_address = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+    static final Pattern email_address = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "hawk+(\\.iit+)*(\\.edu)$");
 
-    private static final String TAG = "LoginActivity";
+    static final String TAG = "LoginActivity";
 
     /* RequestCode for resolutions involving sign-in */
-    private static final int RC_SIGN_IN = 1;
+    static final int RC_SIGN_IN = 1;
 
     /* RequestCode for resolutions to get GET_ACCOUNTS permission on M */
-    private static final int RC_PERM_GET_ACCOUNTS = 2;
+    static final int RC_PERM_GET_ACCOUNTS = 2;
 
     /* Keys for persisting instance variables in savedInstanceState */
-    private static final String KEY_IS_RESOLVING = "is_resolving";
-    private static final String KEY_SHOULD_RESOLVE = "should_resolve";
+    static final String KEY_IS_RESOLVING = "is_resolving";
+    static final String KEY_SHOULD_RESOLVE = "should_resolve";
 
     /* Client for accessing Google APIs */
-    private GoogleApiClient mGoogleApiClient;
+    public static GoogleApiClient mGoogleApiClient;
 
     /* View to display current status (signed-in, signed-out, disconnected, etc) */
-    private TextView mStatus;
+    TextView mStatus;
 
     // [START resolution_variables]
     /* Is there a ConnectionResult resolution in progress? */
-    private boolean mIsResolving = false;
+    boolean mIsResolving = false;
 
     /* Should we automatically resolve ConnectionResults when possible? */
     private boolean mShouldResolve = false;
     // [END resolution_variables]
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -80,8 +83,8 @@ public class LoginActivity extends AppCompatActivity implements
 
         // Set up button click listeners
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-        findViewById(R.id.sign_out_button).setOnClickListener(this);
-        findViewById(R.id.disconnect_button).setOnClickListener(this);
+        // findViewById(R.id.sign_out_button).setOnClickListener(this);
+        //findViewById(R.id.disconnect_button).setOnClickListener(this);
 
         // Large sign-in
         ((SignInButton) findViewById(R.id.sign_in_button)).setSize(SignInButton.SIZE_WIDE);
@@ -104,7 +107,19 @@ public class LoginActivity extends AppCompatActivity implements
         // [END create_google_api_client]
     }
 
-    private void updateUI(boolean isSignedIn) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.sign_out_button:
+                onSignOutClicked();
+                return true;
+            default:
+                return true;
+        }
+    }
+
+    public void updateUI(boolean isSignedIn) {
 
         if (isSignedIn) {
             Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
@@ -128,16 +143,16 @@ public class LoginActivity extends AppCompatActivity implements
 
             // Set button visibility
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
+            //findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
         } else {
             // Show signed-out message and clear email field
-            mStatus.setText(R.string.signed_out);
-            ((TextView) findViewById(R.id.email)).setText("");
+            // mStatus.setText(R.string.signed_out);
+            // ((TextView) findViewById(R.id.email)).setText("");
 
             // Set button visibility
             findViewById(R.id.sign_in_button).setEnabled(true);
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
+            //findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
         }
     }
 
@@ -146,7 +161,7 @@ public class LoginActivity extends AppCompatActivity implements
      *
      * @return true if we have the permission, false if we do not.
      */
-    private boolean checkAccountsPermission() {
+    public boolean checkAccountsPermission() {
         final String perm = Manifest.permission.GET_ACCOUNTS;
         int permissionCheck = ContextCompat.checkSelfPermission(this, perm);
         if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
@@ -177,31 +192,31 @@ public class LoginActivity extends AppCompatActivity implements
     //}
     //}
 
-    private void showSignedInUI() {
+    void showSignedInUI() {
         updateUI(true);
     }
 
-    private void showSignedOutUI() {
+    void showSignedOutUI() {
         updateUI(false);
     }
 
     // [START on_start_on_stop]
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mGoogleApiClient.disconnect();
-    }
+    //@Override
+    //public void onStop() {
+    //  super.onStop();
+    //mGoogleApiClient.disconnect();
+    //}
     // [END on_start_on_stop]
 
     // [START on_save_instance_state]
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(KEY_IS_RESOLVING, mIsResolving);
         outState.putBoolean(KEY_SHOULD_RESOLVE, mShouldResolve);
@@ -312,7 +327,7 @@ public class LoginActivity extends AppCompatActivity implements
     }
     // [END on_connection_failed]
 
-    private void showErrorDialog(ConnectionResult connectionResult) {
+    public void showErrorDialog(ConnectionResult connectionResult) {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
         int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
 
@@ -346,18 +361,14 @@ public class LoginActivity extends AppCompatActivity implements
                 onSignInClicked();
 
                 break;
-            case R.id.sign_out_button:
-                onSignOutClicked();
-                break;
-            case R.id.disconnect_button:
-                onDisconnectClicked();
-                break;
+
+
         }
     }
     // [END on_click]
 
     // [START on_sign_in_clicked]
-    private void onSignInClicked() {
+    public void onSignInClicked() {
         // User clicked the sign-in button, so begin the sign-in process and automatically
         // attempt to resolve any errors that occur.
 
@@ -372,7 +383,7 @@ public class LoginActivity extends AppCompatActivity implements
     // [END on_sign_in_clicked]
 
     // [START on_sign_out_clicked]
-    private void onSignOutClicked() {
+    public void onSignOutClicked() {
         // Clear the default account so that GoogleApiClient will not automatically
         // connect in the future.
         if (mGoogleApiClient.isConnected()) {
@@ -397,4 +408,14 @@ public class LoginActivity extends AppCompatActivity implements
         showSignedOutUI();
     }
     // [END on_disconnect_clicked]
+
+    @Override
+    public void onBackPressed() {
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
+        finish();
+    }
+
 }

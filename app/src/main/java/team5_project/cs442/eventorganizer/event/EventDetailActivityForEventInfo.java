@@ -1,13 +1,12 @@
 package team5_project.cs442.eventorganizer.event;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import team5_project.cs442.eventorganizer.BaseActivity;
+import team5_project.cs442.eventorganizer.activities.BaseActivity;
 import team5_project.cs442.eventorganizer.R;
 
 /**
