@@ -1,9 +1,11 @@
 package team5_project.cs442.eventorganizer.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.StrictMode;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
@@ -38,6 +40,9 @@ public class MapsActivity extends BaseActivity {
     private List<team5_project.cs442.eventorganizer.location.Location> locations;
     private Map<Marker, List<Event>> eventsByMarker;
 
+    private int eventType;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,21 +64,6 @@ public class MapsActivity extends BaseActivity {
         super.onResume();
         setUpMapIfNeeded();
     }
-
-    /**
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menuMap:
-                finish(); //finish Activity.
-                Intent refresh = new Intent(this, MapsActivity.class);
-                startActivity(refresh);//Start the same Activity
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    */
 
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
@@ -156,6 +146,8 @@ public class MapsActivity extends BaseActivity {
                     // we assume that the first object is most recent event.
                     Event event = location.getEvents().get(0);
                     BitmapDescriptor icon = EventTimeChecker.eventChecker(event.getmEventStartTime(), event.getmEventEndTime());
+
+
                     markerOption.icon(icon);
                     markerOption.title(location.getmLocation());
                     Marker currentMarker = mMap.addMarker(markerOption);
@@ -170,8 +162,6 @@ public class MapsActivity extends BaseActivity {
                             showListView(Database.TAG_LOC, marker.getTitle());
                         }
                     });
-
-                    //if (location.getmLocation().equals("Carman Hall")) Log.d("Carman?",String.valueOf(location.getEventsCounter()));
                 }
             }
         }

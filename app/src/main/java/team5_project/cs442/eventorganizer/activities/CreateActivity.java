@@ -219,22 +219,4 @@ public class CreateActivity extends BaseActivity implements View.OnClickListener
         cal.set(Calendar.MINUTE, minute);
         text.setText(timeformat.format(cal.getTime()));
     }
-
-    /**
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            //case R.id.menuCreate:
-            //    return true;
-            case R.id.sign_out:
-                Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient);
-                Plus.AccountApi.revokeAccessAndDisconnect(LoginActivity.mGoogleApiClient);
-                LoginActivity.mGoogleApiClient.disconnect();
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    */
 }

@@ -37,7 +37,8 @@ public class BaseActivity extends FragmentActivity {
             case R.id.menuMap:
                 returnToMap();
                 return true;
-            case R.id.menuMine:
+
+            case R.id.menuEvents:
                 if (listInstance != null) {
                     listInstance.finish();
                 }
