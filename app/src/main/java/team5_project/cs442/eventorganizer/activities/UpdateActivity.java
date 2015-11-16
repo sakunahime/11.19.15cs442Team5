@@ -379,10 +379,13 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
                     @Override
                     protected void onPostExecute(List<String> result) {
                         following = false;
-                        for (String name : result) {
-                            if (name.equals(mEvent.getmEventName())) {
-                                following = true;
-                                break;
+                        if(result != null) {
+
+                            for (String name : result) {
+                                if ((name != null) && (name.equals(mEvent.getmEventName()))) {
+                                    following = true;
+                                    break;
+                                }
                             }
                         }
                         refreshCalendar();
