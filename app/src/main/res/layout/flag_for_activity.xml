@@ -5,6 +5,20 @@
     android:orientation="vertical"
     android:weightSum="1">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:minHeight="30px"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textSize="20dp"
+            android:id="@+id/eventType" />
+    </LinearLayout>
+
     <ListView
         android:id="@+id/flag_list_view_activity"
         android:layout_width="fill_parent"
@@ -18,46 +32,13 @@
         android:minHeight="30px"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/allEvents"
-            android:layout_width="wrap_content"
+        <Spinner
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_weight="1"
-            android:textSize="10sp"
-            android:text="All" />
-        <Button
-            android:id="@+id/onGoingEvents"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_weight="1"
-            android:textSize="10sp"
-            android:text="Ongoing" />
-        <Button
-            android:id="@+id/upComingEvents"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_weight="1"
-            android:textSize="10sp"
-            android:text="Upcoming" />
-        <Button
-            android:id="@+id/futureEvents"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_weight="1"
-            android:textSize="10sp"
-            android:text="Future" />
-        <Button
-            android:id="@+id/myEvents"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_weight="1"
-            android:textSize="10sp"
-            android:text="Mine" />
+            android:id="@+id/even_type_spinner"
+            android:drawSelectorOnTop="true"
+            android:spinnerMode="dialog"
+            android:entries="@array/filter_spinner"/>
     </LinearLayout>
 
 </LinearLayout>

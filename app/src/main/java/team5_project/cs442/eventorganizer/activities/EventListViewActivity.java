@@ -2,13 +2,11 @@ package team5_project.cs442.eventorganizer.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
-
-import com.google.android.gms.plus.Plus;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -21,10 +19,13 @@ import team5_project.cs442.eventorganizer.event.Tuple;
 /**
  * Created by sangwon on 10/23/15.
  */
-public class EventListViewActivity extends BaseActivity implements View.OnClickListener {
+public class EventListViewActivity extends BaseActivity {
 
     private Tuple mTuple;
 
+    private Spinner mSpinnerLoc;
+
+    private TextView mEventTypeText;
     /**
      * EventType
      * 0 = All
@@ -35,16 +36,6 @@ public class EventListViewActivity extends BaseActivity implements View.OnClickL
      */
     private int eventType;
 
-    private Button allEvents;
-
-    private Button onGoingEvents;
-
-    private Button upComingEvents;
-
-    private Button futureEvents;
-
-    private Button myEvents;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,49 +43,47 @@ public class EventListViewActivity extends BaseActivity implements View.OnClickL
 
         eventType = 0;
 
-        allEvents = (Button) findViewById(R.id.allEvents);
-        allEvents.setOnClickListener(this);
-
-        onGoingEvents = (Button) findViewById(R.id.onGoingEvents);
-        onGoingEvents.setOnClickListener(this);
-
-        upComingEvents = (Button) findViewById(R.id.upComingEvents);
-        upComingEvents.setOnClickListener(this);
-
-        futureEvents = (Button) findViewById(R.id.futureEvents);
-        futureEvents.setOnClickListener(this);
-
-        myEvents = (Button) findViewById(R.id.myEvents);
-        myEvents.setOnClickListener(this);
-
         Bundle bundle = getIntent().getExtras();
         mTuple = (Tuple) bundle.getSerializable("Tuple");
+        mEventTypeText = (TextView) findViewById(R.id.eventType);
+        mSpinnerLoc = (Spinner) findViewById(R.id.even_type_spinner);
+
+        mSpinnerLoc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                eventType = position;
+                setmEventTypeText(eventType);
+                onResume();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                eventType = 0;
+                setmEventTypeText(eventType);
+                onResume();
+            }
+        });
 
         listInstance = this;
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v == allEvents) {
-            eventType = 0;
-            onResume();
-            return;
-        } else if (v == onGoingEvents) {
-            eventType = 1;
-            onResume();
-            return;
-        } else if (v == upComingEvents) {
-            eventType = 2;
-            onResume();
-            return;
-        } else if (v == futureEvents) {
-            eventType = 3;
-            onResume();
-            return;
-        } else if (v == myEvents) {
-            eventType = 4;
-            onResume();
-            return;
+    private void setmEventTypeText(int eventType) {
+        switch (eventType) {
+            case 1:
+                mEventTypeText.setText("Ongoing Events List :");
+                return;
+            case 2:
+                mEventTypeText.setText("Events In 5 hours List :");
+                return;
+            case 3:
+                mEventTypeText.setText("Events After 5 hours List :");
+                return;
+            case 4:
+                mEventTypeText.setText("My Events List :");
+                return;
+            default:
+                mEventTypeText.setText("All Events List :");
+                return;
         }
     }
 

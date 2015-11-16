@@ -57,7 +57,7 @@ public class EventTimeChecker {
          * 0 = All
          * 1 = Ongoing event
          * 2 = Upcoming event in 5 hours
-         * 3 = Future event (After 5hours)
+         * 3 = After 5hours
          */
         if(eventType == 0) { // Just return all
             return givenEvents;

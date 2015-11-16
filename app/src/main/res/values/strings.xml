@@ -40,5 +40,13 @@
     <string name="cancel">Cancel</string>
     <string name="event_cost">Cost</string>
 
+    <string-array name="filter_spinner">
+        <item>All Events</item>
+        <item>Ongoing</item>
+        <item>In 5 Hours</item>
+        <item>After 5hours</item>
+        <item>My Events</item>
+    </string-array>
+
 
 </resources>
