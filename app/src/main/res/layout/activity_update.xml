@@ -229,20 +229,20 @@
             android:gravity="bottom|center_horizontal">
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/CustomButton"
+                android:layout_weight="1"
                 android:text="Update"
                 android:id="@+id/btnUpdate" />
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/CustomButton"
+                android:layout_weight="1"
                 android:text="Delete"
                 android:id="@+id/btnDelete" />
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/CustomButton"
+                android:layout_weight="1"
                 android:text="Add to Calendar"
                 android:id="@+id/btnAddToCalendar"/>
 

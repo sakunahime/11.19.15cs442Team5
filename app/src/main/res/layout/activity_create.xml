@@ -226,8 +226,7 @@
                     android:layout_centerInParent="true">
 
                     <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/CustomButton"
                         android:text="Create"
                         android:id="@+id/btnCreate" />
 
