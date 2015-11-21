@@ -70,19 +70,19 @@ public class EventListViewActivity extends BaseActivity {
     private void setmEventTypeText(int eventType) {
         switch (eventType) {
             case 1:
-                mEventTypeText.setText("Ongoing Events List :");
+                mEventTypeText.setText("Ongoing Events :");
                 return;
             case 2:
-                mEventTypeText.setText("Events In 5 hours List :");
+                mEventTypeText.setText("Events In 5 hours :");
                 return;
             case 3:
-                mEventTypeText.setText("Events After 5 hours List :");
+                mEventTypeText.setText("Future Events :");
                 return;
             case 4:
-                mEventTypeText.setText("My Events List :");
+                mEventTypeText.setText("My Events :");
                 return;
             default:
-                mEventTypeText.setText("All Events List :");
+                mEventTypeText.setText("All Event :");
                 return;
         }
     }
