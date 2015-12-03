@@ -36,6 +36,7 @@ public class EventAdapterForListViewActivity extends ArrayAdapter<Event> impleme
 
         String event_name = event.getmEventName();
         String event_start_time = String.valueOf(event.getmEventStartTime());
+        String event_end_time = String.valueOf(event.getmEventEndTime());
 
         if (convertView == null) {
             event_view = new LinearLayout(getContext());
@@ -48,11 +49,12 @@ public class EventAdapterForListViewActivity extends ArrayAdapter<Event> impleme
         }
 
         TextView event_name_text = (TextView) event_view.findViewById(R.id.event_name_info);
-        TextView event_time_text = (TextView) event_view.findViewById(R.id.event_start_time_info);
+        TextView event_stime_text = (TextView) event_view.findViewById(R.id.event_start_time_info);
+        TextView event_etime_text = (TextView) event_view.findViewById(R.id.event_end_time_info);
 
         event_name_text.setText(event_name);
-        event_time_text.setText(event_start_time);
-
+        event_stime_text.setText(event_start_time);
+        event_etime_text.setText(event_end_time);
 
         return event_view;
     }

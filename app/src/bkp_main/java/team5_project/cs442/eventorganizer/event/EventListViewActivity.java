@@ -30,7 +30,7 @@ public class EventListViewActivity extends Activity {
         //Intent intent = getIntent();
         Bundle bundle = getIntent().getExtras();
         Log.d("Listvew acti:", String.valueOf(bundle.isEmpty()));
-        //EventAdapter infoAdapter = (EventAdapter) bundle.getSerializable("EventAdapter");
+        //Eventppter infoAdapter = (EventAdapter) bundle.getSerializable("EventAdapter");
 
         events = (List<Event>) bundle.getSerializable("Events");
         EventAdapterForListViewActivity eventAdapterForEventInfo = new EventAdapterForListViewActivity(this, resID, events);

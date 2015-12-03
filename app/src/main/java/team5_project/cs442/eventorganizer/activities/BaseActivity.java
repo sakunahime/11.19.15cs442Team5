@@ -42,7 +42,7 @@ public class BaseActivity extends FragmentActivity {
                 if (listInstance != null) {
                     listInstance.finish();
                 }
-                showListView(Database.TAG_EMAIL, email);
+                showAllListView(Database.TAG_EMAIL, email);
                 return true;
             case R.id.sign_out:
                 Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient);
@@ -75,8 +75,17 @@ public class BaseActivity extends FragmentActivity {
         finish();
     }
 
-    public void showListView(String tag, String value) {
+    public void showFlagListView(String tag, String value) {
         Intent i = new Intent(getApplicationContext(), EventListViewActivity.class);
+        Bundle bundle = new Bundle();
+        Tuple tuple = new Tuple(tag, value);
+        bundle.putSerializable("Tuple", (Serializable) tuple);
+        i.putExtras(bundle);
+        startActivity(i);
+    }
+
+    public void showAllListView(String tag, String value) {
+        Intent i = new Intent(getApplicationContext(), TabActivity.class);
         Bundle bundle = new Bundle();
         Tuple tuple = new Tuple(tag, value);
         bundle.putSerializable("Tuple", (Serializable) tuple);

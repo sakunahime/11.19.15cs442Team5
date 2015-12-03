@@ -54,9 +54,11 @@
         <activity android:name=".activities.UpdateActivity" >
         </activity>
 
-        <activity android:name=".activities.TabActivity" >
+        <activity android:name=".activities.DetailActivity" >
         </activity>
 
+        <activity android:name=".activities.TabActivity" >
+        </activity>
     </application>
 
 </manifest>

@@ -17,25 +17,39 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import team5_project.cs442.eventorganizer.activities.DetailActivity;
 import team5_project.cs442.eventorganizer.activities.UpdateActivity;
 
 public class CalendarEventsTask extends AsyncTask<Void, Void, List<String>> {
 
     private static final String TAG = "CalendarEventsTask";
 
-    private UpdateActivity activity = null;
+    private UpdateActivity updateActivity = null;
+    private DetailActivity detailActivity = null;
     private Calendar service = null;
     private Exception error = null;
+    private final boolean isUpdateEnable;
 
     public CalendarEventsTask(UpdateActivity activity, GoogleAccountCredential credential) {
-        this.activity = activity;
-
+        this.updateActivity = activity;
+        this.isUpdateEnable = true;
         HttpTransport transport = AndroidHttp.newCompatibleTransport();
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
         service = new Calendar.Builder(transport, jsonFactory, credential)
                 .setApplicationName("IIT Event Organizer")
                 .build();
     }
+
+    public CalendarEventsTask(DetailActivity activity, GoogleAccountCredential credential) {
+        this.detailActivity = activity;
+        this.isUpdateEnable = false;
+        HttpTransport transport = AndroidHttp.newCompatibleTransport();
+        JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+        service = new Calendar.Builder(transport, jsonFactory, credential)
+                .setApplicationName("IIT Event Organizer")
+                .build();
+    }
+
 
     @Override
     protected List<String> doInBackground(Void... params) {
@@ -69,9 +83,15 @@ public class CalendarEventsTask extends AsyncTask<Void, Void, List<String>> {
                 // TODO: Show error
                 error.printStackTrace();
             } else if (error instanceof UserRecoverableAuthIOException) {
-                activity.startActivityForResult(
-                        ((UserRecoverableAuthIOException) error).getIntent(),
-                        UpdateActivity.REQUEST_AUTHORIZATION);
+                if (isUpdateEnable) {
+                    updateActivity.startActivityForResult(
+                            ((UserRecoverableAuthIOException) error).getIntent(),
+                            UpdateActivity.REQUEST_AUTHORIZATION);
+                } else {
+                    detailActivity.startActivityForResult(
+                            ((UserRecoverableAuthIOException) error).getIntent(),
+                            UpdateActivity.REQUEST_AUTHORIZATION);
+                }
             } else {
                 // TODO: Show error
                 error.printStackTrace();
