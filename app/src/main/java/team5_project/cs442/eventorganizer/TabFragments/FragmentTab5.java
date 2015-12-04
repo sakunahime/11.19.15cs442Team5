@@ -16,6 +16,7 @@ import java.util.List;
 import team5_project.cs442.eventorganizer.R;
 import team5_project.cs442.eventorganizer.activities.DetailActivity;
 import team5_project.cs442.eventorganizer.activities.EventAdapterForListViewActivity;
+import team5_project.cs442.eventorganizer.activities.UpdateActivity;
 import team5_project.cs442.eventorganizer.database.Database;
 import team5_project.cs442.eventorganizer.event.Event;
 import team5_project.cs442.eventorganizer.event.EventTimeChecker;
@@ -57,7 +58,7 @@ public class FragmentTab5 extends Fragment{
             public void onItemClick(AdapterView<?> arg0, View arg1,
                                     int position, long arg3) {
                 // TODO Auto-generated method stub
-                Intent i = new Intent(getActivity().getBaseContext(), DetailActivity.class);
+                Intent i = new Intent(getActivity().getBaseContext(), UpdateActivity.class);
 
                 Event event = events.get(position);
                 i.putExtra("Event", event);
