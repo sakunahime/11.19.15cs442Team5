@@ -37,23 +37,9 @@ public class TabActivity extends BaseActivity {
     android.app.Fragment fragmentTab4 = new FragmentTab4();
     android.app.Fragment fragmentTab5 = new FragmentTab5();
 
-    private Tuple mTuple;
-
-    private TextView mEventTypeText;
-
-    public List<Event> events;
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab);
-
-       // Intent i1 = new Intent(this, FragmentTab1.class);
-         //       i2 = new Intent(this, TabActivity.class),
-           //     i3 = new Intent(this, TabActivity.class),
-             //   i4 = new Intent(this, TabActivity.class),
-               // i5 = new Intent(this, TabActivity.class);
-
-      //  i1.putExtras(getIntent().getExtras());
 
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);

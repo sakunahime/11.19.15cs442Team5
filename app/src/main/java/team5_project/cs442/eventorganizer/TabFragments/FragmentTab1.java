@@ -31,9 +31,9 @@ import team5_project.cs442.eventorganizer.event.EventTimeChecker;
 import team5_project.cs442.eventorganizer.event.Tuple;
 
 /**
- * Created by Anna on 11/20/2015.
+ * Created by Anna Eng on 11/20/2015.
  */
-public class FragmentTab1 extends ListFragment {
+public class FragmentTab1 extends Fragment {
     /**
      * EventType
      * 0 = All
@@ -42,68 +42,11 @@ public class FragmentTab1 extends ListFragment {
      * 3 = Future (After 5 hours)
      * 4 = Mine
      */
-   // private int eventType =0;
-
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tab, container, false);
-        TextView textview = (TextView) view.findViewById(R.id.tabtextview);
-        textview.setText("Tab 2");
-        return view;
-    }
- /*   @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        int resID = R.layout.event_info_list_view;
-        List<Event> tempEvents;
-
-            tempEvents = Database.readList();
-            tempEvents = EventTimeChecker.isRightEventTypes(tempEvents, eventType);
-
-        final List<Event> events = tempEvents;
-
-        EventAdapterForListViewActivity eventAdapterForEventInfo = new EventAdapterForListViewActivity(getActivity(), resID, events);
-
-        ListView list = (ListView) getView().findViewById(R.id.tablistview);
-        list.setAdapter(eventAdapterForEventInfo);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.tab, container, false);
-    }
-
-    @Override
-    public void onListItemClick(ListView list, View v, int position, long id) {
-
-        Toast.makeText(getActivity(), getListView().getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
-    }
-
     private int eventType = 0;
 
-
-    /*public ListView onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        int resID = R.layout.event_info_list_view;
-        List<Event> tempEvents;
-
-        tempEvents = Database.readList();
-        tempEvents = EventTimeChecker.isRightEventTypes(tempEvents, eventType);
-
-        final List<Event> events = tempEvents;
-
-        EventAdapterForListViewActivity eventAdapterForEventInfo = new EventAdapterForListViewActivity(getActivity(), resID, events);
-
-        ListView list = (ListView) getView().findViewById(R.id.tablistview);
-        list.setAdapter(eventAdapterForEventInfo);
-
-        return list;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        eventType = 0;
 
         View rootView = inflater.inflate(R.layout.tab, container, false);
 
@@ -117,40 +60,32 @@ public class FragmentTab1 extends ListFragment {
 
         EventAdapterForListViewActivity eventAdapterForEventInfo = new EventAdapterForListViewActivity(getActivity(), resID, events);
 
-        ListView list = (ListView) rootView().findViewById(R.id.tablistview);
+        ListView list = (ListView) rootView.findViewById(R.id.tablistview);
         list.setAdapter(eventAdapterForEventInfo);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1,
+                                    int position, long arg3) {
+                // TODO Auto-generated method stub
+                Intent i =  new Intent(getActivity().getBaseContext(), DetailActivity.class);
+
+                Event event = events.get(position);
+                i.putExtra("Event", event);
+                startActivity(i);
+            }
+        });
 
         return rootView;
     }
 
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        ListAdapter listAdapter = new ArrayAdapter<string>(getActivity(), android.R.layout.simple_list_item_1, myfriends);
-        setListAdapter(listAdapter);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.list_fragment, container, false);
-    }
-
-    @Override
-    public void onListItemClick(ListView list, View v, int position, long id) {
-
-        Toast.makeText(getActivity(), getListView().getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
-    }
-}
-
-    @Override
-    public void onListItemClick(ListView list, View v, int position, long id) {
-
-        Intent i = new Intent(getActivity().getBaseContext(), DetailActivity.class);
-        Event event = events.get(position);
-        i.putExtra("Event", event);
-        startActivity(i);
+        /*public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.tab, container, false);
+        TextView textview = (TextView) view.findViewById(R.id.tabtextview);
+        textview.setText("Tab 2");
+        return view;
     }*/
 
     public static class EventsTabListener implements android.app.ActionBar.TabListener {
