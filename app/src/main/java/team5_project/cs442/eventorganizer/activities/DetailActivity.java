@@ -15,7 +15,7 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -27,6 +27,8 @@ import com.google.api.client.util.DateTime;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.EventDateTime;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -58,15 +60,15 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     private SimpleDateFormat dateformat;
     private SimpleDateFormat timeformat;
 
-    private EditText mEditName;
-    private Spinner mSpinnerLoc;
+    private TextView mEditName;
+    private TextView mSpinnerLoc;
     private TextView mTextStartDate;
     private TextView mTextStartTime;
     private TextView mTextEndDate;
     private TextView mTextEndTime;
-    private EditText mEditDesc;
-    private EditText mEditHost;
-    private EditText mEditCost;
+    private TextView mEditDesc;
+    private TextView mEditHost;
+    private TextView mEditCost;
 
     private Button mBtnAddToCalendar;
 
@@ -90,25 +92,25 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         Intent intent = getIntent();
         mEvent = (Event) intent.getSerializableExtra("Event");
 
-        mEditName = (EditText) findViewById(R.id.editUpdateName);
-        mSpinnerLoc = (Spinner) findViewById(R.id.spinnerUpdateLoc);
+        mEditName = (TextView) findViewById(R.id.editUpdateName);
+        mSpinnerLoc = (TextView) findViewById(R.id.spinnerUpdateLoc);
         mTextStartDate = (TextView) findViewById(R.id.editUpdateStartDate);
         mTextStartTime = (TextView) findViewById(R.id.editUpdateStartTime);
         mTextEndDate = (TextView) findViewById(R.id.editUpdateEndDate);
         mTextEndTime = (TextView) findViewById(R.id.editUpdateEndTime);
-        mEditDesc = (EditText) findViewById(R.id.editUpdateDesc);
-        mEditHost = (EditText) findViewById(R.id.editUpdateHost);
-        mEditCost = (EditText) findViewById(R.id.editUpdateCost);
+        mEditDesc = (TextView) findViewById(R.id.editUpdateDesc);
+        mEditHost = (TextView) findViewById(R.id.editUpdateHost);
+        mEditCost = (TextView) findViewById(R.id.editUpdateCost);
         mBtnAddToCalendar = (Button) findViewById(R.id.btnAddToCalendar);
 
         mEditName.setText(mEvent.getmEventName());
-        initLocation();
+        mSpinnerLoc.setText(mEvent.getmEventLocation());
         initDates();
         mEditDesc.setText(mEvent.getmDescription());
         mEditHost.setText(mEvent.getmHost());
         mEditCost.setText(String.valueOf(mEvent.getmCost()));
 
-        EditText mEditEmail = (EditText) findViewById(R.id.editUpdateEmail);
+        TextView mEditEmail = (TextView) findViewById(R.id.editUpdateEmail);
         mEditEmail.setText(mEvent.getmEventCreator());
         mEditEmail.setEnabled(false);
 
@@ -240,7 +242,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     private void updateEvent() {
         mEvent.setmEventName(mEditName.getText().toString());
-        mEvent.setmEventLocation(mSpinnerLoc.getSelectedItem().toString());
+        mEvent.setmEventLocation(mSpinnerLoc.getText().toString());
 
         Date start = mStartCal.getTime();
         String sDate = EventTimeChecker.formatter.format(start);
@@ -276,9 +278,9 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         if (index < 0) index = 0;
 
         ArrayAdapter<String> adaptLoc = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, locations);
-        mSpinnerLoc.setAdapter(adaptLoc);
+        //mSpinnerLoc.setAdapter(adaptLoc);
 
-        mSpinnerLoc.setSelection(index);
+//        mSpinnerLoc.setSelection(index);
     }
 
     private void initDates() {

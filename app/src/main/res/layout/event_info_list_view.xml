@@ -7,18 +7,22 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/event_name_info"
+        android:background="@color/white"
+        android:gravity="left"
          />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/event_start_time_info"
-         />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/event_start_time_info"
+            android:background="@color/white"
+             />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/event_end_time_info"
-         />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/event_end_time_info"
+            android:background="@color/white"
+            />
 
 </LinearLayout>

@@ -45,8 +45,8 @@ public class TabActivity extends BaseActivity {
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         tab1 = actionBar.newTab().setText("All");
-        tab2 = actionBar.newTab().setText("Ongoing");
-        tab3 = actionBar.newTab().setText("In 5 Hours");
+        tab2 = actionBar.newTab().setText("Happening");
+        tab3 = actionBar.newTab().setText("Within 5 Hours");
         tab4 = actionBar.newTab().setText("Future");
         tab5 = actionBar.newTab().setText("My Events");
 
