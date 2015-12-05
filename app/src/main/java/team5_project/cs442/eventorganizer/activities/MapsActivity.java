@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class MapsActivity extends BaseActivity {
 
     private int eventType;
 
+    private ImageButton refreshButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,22 @@ public class MapsActivity extends BaseActivity {
         MapsInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+    }
+
+    private void addRefreshButtonListerner() {
+
+
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                finish();
+                startActivity(Intent);
+            }
+
+        });
+
     }
 
     @Override
@@ -112,6 +130,12 @@ public class MapsActivity extends BaseActivity {
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+
+        refreshButton= (ImageButton) findViewById(R.id.imageButton1);
+        refreshButton.setOnClickListener(this);
+        addRefreshButtonListerner();
+
         loadAllEvents();
     }
 
