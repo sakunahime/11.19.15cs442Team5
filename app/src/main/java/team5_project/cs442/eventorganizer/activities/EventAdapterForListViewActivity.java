@@ -37,8 +37,8 @@ public class EventAdapterForListViewActivity extends ArrayAdapter<Event> impleme
 
         String event_name = event.getmEventName();
 
-        String event_start_time = new SimpleDateFormat("EEE MMM d ''yy hh:mm aaa").format(event.getmEventStartTime());
-        String event_end_time = new SimpleDateFormat("EEE MMM d ''yy hh:mm aaa").format(event.getmEventEndTime());
+        String event_start_time = new SimpleDateFormat("EEE  MMM d ''yy  hh:mm aaa").format(event.getmEventStartTime());
+        String event_end_time = new SimpleDateFormat("EEE  MMM d ''yy  hh:mm aaa").format(event.getmEventEndTime());
 
        // String event_start_time = String.valueOf(event.getmEventStartTime());
         //String event5_end_time = String.valueOf(event.getmEventEndTime());

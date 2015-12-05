@@ -226,19 +226,19 @@
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="bottom|center_horizontal">
+            android:gravity="bottom|center_horizontal"
+            android:padding="16dp">
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/CustomButton"
                 android:text="Update"
+                android:layout_width="fill_parent"
                 android:id="@+id/btnUpdate" />
 
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            <!--Button
+                style="@style/CustomButton"
             android:text="Cancel"
-            android:id="@+id/btnCancel"/>
+            android:id="@+id/btnCancel"/-->
 
         </LinearLayout>
     </LinearLayout>

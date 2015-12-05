@@ -168,6 +168,7 @@ public class MyEventDetailActivity extends BaseActivity implements View.OnClickL
         if (following) {
             mBtnAddToCalendar.setEnabled(false);
             mBtnAddToCalendar.setText("Already added");
+            mBtnAddToCalendar.setBackgroundColor(getApplication().getResources().getColor(R.color.grey));
         } else {
             mBtnAddToCalendar.setEnabled(true);
             mBtnAddToCalendar.setText("Add to calendar");

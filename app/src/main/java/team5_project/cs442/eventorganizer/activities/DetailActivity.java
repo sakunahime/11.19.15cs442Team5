@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -154,6 +155,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         if (following) {
             mBtnAddToCalendar.setEnabled(false);
             mBtnAddToCalendar.setText("Already added");
+            mBtnAddToCalendar.setBackgroundColor(getApplication().getResources().getColor(R.color.grey));
         } else {
             mBtnAddToCalendar.setEnabled(true);
             mBtnAddToCalendar.setText("Add to calendar");

@@ -9,7 +9,7 @@ import android.widget.EditText;
 import team5_project.cs442.eventorganizer.activities.BaseActivity;
 import team5_project.cs442.eventorganizer.R;
 
-/**
+/** OBSOLETE?????????????????????????!!!!!!!!!!!!
  * Created by sangwon on 10/23/15.
  */
 public class EventDetailActivityForEventInfo extends BaseActivity {
