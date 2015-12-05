@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="fill_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:layout_height="wrap_content"
     android:padding="6dp"
     >
 
@@ -11,7 +11,6 @@
         android:id="@+id/event_name"
         android:layout_gravity="left"
         android:gravity="left"
-        android:background="@color/white"
         />
 
     <TextView
@@ -20,7 +19,6 @@
         android:layout_toRightOf="@id/event_name"
         android:id="@+id/event_start_time"
         android:gravity="right"
-        android:background="@color/white"
         />
 
     <!--TextView
