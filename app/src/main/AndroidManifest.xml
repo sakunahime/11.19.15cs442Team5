@@ -44,7 +44,6 @@
         <activity android:name=".activities.EventListViewActivity" >
         </activity>
 
-        EventListViewActivity
         <activity android:name=".event.EventDetailActivityForEventInfo" >
         </activity>
 
@@ -58,6 +57,9 @@
         </activity>
 
         <activity android:name=".activities.TabActivity" >
+        </activity>
+
+        <activity android:name=".activities.MyEventDetailActivity" >
         </activity>
     </application>
 

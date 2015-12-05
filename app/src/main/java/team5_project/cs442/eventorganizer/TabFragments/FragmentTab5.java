@@ -1,8 +1,10 @@
 package team5_project.cs442.eventorganizer.TabFragments;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import java.util.List;
 import team5_project.cs442.eventorganizer.R;
 import team5_project.cs442.eventorganizer.activities.DetailActivity;
 import team5_project.cs442.eventorganizer.activities.EventAdapterForListViewActivity;
+import team5_project.cs442.eventorganizer.activities.MyEventDetailActivity;
 import team5_project.cs442.eventorganizer.activities.UpdateActivity;
 import team5_project.cs442.eventorganizer.database.Database;
 import team5_project.cs442.eventorganizer.event.Event;
@@ -29,6 +32,8 @@ public class FragmentTab5 extends Fragment{
 
     private int eventType = 4;
     private Tuple mTuple;
+
+    private static final String TAG = "FragmentTab5";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,7 +63,7 @@ public class FragmentTab5 extends Fragment{
             public void onItemClick(AdapterView<?> arg0, View arg1,
                                     int position, long arg3) {
                 // TODO Auto-generated method stub
-                Intent i = new Intent(getActivity().getBaseContext(), UpdateActivity.class);
+                Intent i = new Intent(getActivity().getBaseContext(), MyEventDetailActivity.class);
 
                 Event event = events.get(position);
                 i.putExtra("Event", event);
@@ -96,6 +101,7 @@ public class FragmentTab5 extends Fragment{
 
         public void onTabReselected(android.app.ActionBar.Tab tab, android.app.FragmentTransaction ft) {
             // nothing done here
+
         }
     }
 }

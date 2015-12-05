@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import team5_project.cs442.eventorganizer.R;
@@ -35,8 +36,12 @@ public class EventAdapterForListViewActivity extends ArrayAdapter<Event> impleme
         final Event event = getItem(position);
 
         String event_name = event.getmEventName();
-        String event_start_time = String.valueOf(event.getmEventStartTime());
-        String event_end_time = String.valueOf(event.getmEventEndTime());
+
+        String event_start_time = new SimpleDateFormat("EEE MMM d ''yy hh:mm aaa").format(event.getmEventStartTime());
+        String event_end_time = new SimpleDateFormat("EEE MMM d ''yy hh:mm aaa").format(event.getmEventEndTime());
+
+       // String event_start_time = String.valueOf(event.getmEventStartTime());
+        //String event5_end_time = String.valueOf(event.getmEventEndTime());
 
         if (convertView == null) {
             event_view = new LinearLayout(getContext());

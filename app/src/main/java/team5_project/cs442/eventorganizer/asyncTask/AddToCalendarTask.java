@@ -16,6 +16,7 @@ import com.google.api.services.calendar.model.Event;
 import java.io.IOException;
 
 import team5_project.cs442.eventorganizer.activities.DetailActivity;
+import team5_project.cs442.eventorganizer.activities.MyEventDetailActivity;
 import team5_project.cs442.eventorganizer.activities.UpdateActivity;
 
 public class AddToCalendarTask extends AsyncTask<Void, Void, Void> {
@@ -24,6 +25,7 @@ public class AddToCalendarTask extends AsyncTask<Void, Void, Void> {
 
     private UpdateActivity updateActivity = null;
     private DetailActivity deatilActivity = null;
+    private MyEventDetailActivity myeventdeatilActivity = null;
     private Event event = null;
     private Calendar service = null;
     private Exception error = null;
@@ -44,6 +46,17 @@ public class AddToCalendarTask extends AsyncTask<Void, Void, Void> {
         this.deatilActivity = activity;
         this.event = event;
         this.isUpdateEnable = false;
+        HttpTransport transport = AndroidHttp.newCompatibleTransport();
+        JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+        service = new Calendar.Builder(transport, jsonFactory, credential)
+                .setApplicationName("IIT Event Organizer")
+                .build();
+    }
+
+    public AddToCalendarTask(MyEventDetailActivity activity, GoogleAccountCredential credential, Event event) {
+        this.myeventdeatilActivity = activity;
+        this.event = event;
+        this.isUpdateEnable = true;
         HttpTransport transport = AndroidHttp.newCompatibleTransport();
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
         service = new Calendar.Builder(transport, jsonFactory, credential)

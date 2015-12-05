@@ -15,11 +15,8 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -35,21 +32,22 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import team5_project.cs442.eventorganizer.R;
 import team5_project.cs442.eventorganizer.asyncTask.AddToCalendarTask;
 import team5_project.cs442.eventorganizer.asyncTask.CalendarEventsTask;
-import team5_project.cs442.eventorganizer.R;
 import team5_project.cs442.eventorganizer.database.Database;
 import team5_project.cs442.eventorganizer.event.Event;
 import team5_project.cs442.eventorganizer.event.EventTimeChecker;
+import team5_project.cs442.eventorganizer.event.Tuple;
 import team5_project.cs442.eventorganizer.location.LocationLoader;
 
-public class UpdateActivity extends BaseActivity implements View.OnClickListener {
+public class MyEventDetailActivity extends BaseActivity implements View.OnClickListener {
 
     public static final int REQUEST_ACCOUNT_PICKER = 1000;
     public static final int REQUEST_AUTHORIZATION = 1001;
     public static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
 
-    private static final String TAG = "UpdateActivity";
+    private static final String TAG = "MyEventDetailActivity";
 
     private GoogleAccountCredential credential;
 
@@ -59,18 +57,19 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
     private SimpleDateFormat dateformat;
     private SimpleDateFormat timeformat;
 
-    private EditText mEditName;
-    private Spinner mSpinnerLoc;
+    private TextView mEditName;
+    private TextView mSpinnerLoc;
     private TextView mTextStartDate;
     private TextView mTextStartTime;
     private TextView mTextEndDate;
     private TextView mTextEndTime;
-    private EditText mEditDesc;
-    private EditText mEditHost;
-    private EditText mEditCost;
+    private TextView mEditDesc;
+    private TextView mEditHost;
+    private TextView mEditCost;
 
-    private Button mBtnUpdate;
-   // private Button mBtnCancel;
+    private Button mBtnAddToCalendar;
+    private Button mBtnDeleteEvent;
+    private Button mBtnEdit;
 
     private DatePickerDialog mStartDateDialog;
     private TimePickerDialog mStartTimeDialog;
@@ -87,37 +86,39 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_update);
+        setContentView(R.layout.activity_myevent_detail);
 
         Intent intent = getIntent();
         mEvent = (Event) intent.getSerializableExtra("Event");
 
-        mEditName = (EditText) findViewById(R.id.editUpdateName);
-        mSpinnerLoc = (Spinner) findViewById(R.id.spinnerUpdateLoc);
+        mEditName = (TextView) findViewById(R.id.editUpdateName);
+        mSpinnerLoc = (TextView) findViewById(R.id.spinnerUpdateLoc);
         mTextStartDate = (TextView) findViewById(R.id.editUpdateStartDate);
         mTextStartTime = (TextView) findViewById(R.id.editUpdateStartTime);
         mTextEndDate = (TextView) findViewById(R.id.editUpdateEndDate);
         mTextEndTime = (TextView) findViewById(R.id.editUpdateEndTime);
-        mEditDesc = (EditText) findViewById(R.id.editUpdateDesc);
-        mEditHost = (EditText) findViewById(R.id.editUpdateHost);
-        mEditCost = (EditText) findViewById(R.id.editUpdateCost);
-        mBtnUpdate = (Button) findViewById(R.id.btnUpdate);
-      //  mBtnCancel = (Button) findViewById(R.id.btnCancel);
+        mEditDesc = (TextView) findViewById(R.id.editUpdateDesc);
+        mEditHost = (TextView) findViewById(R.id.editUpdateHost);
+        mEditCost = (TextView) findViewById(R.id.editUpdateCost);
+        mBtnAddToCalendar = (Button) findViewById(R.id.btnAddToCalendar);
+        mBtnDeleteEvent = (Button) findViewById(R.id.btnDelete);
+        mBtnEdit = (Button) findViewById(R.id.btnEdit);
 
         mEditName.setText(mEvent.getmEventName());
-        initLocation();
+        mSpinnerLoc.setText(mEvent.getmEventLocation());
         initDates();
         mEditDesc.setText(mEvent.getmDescription());
         mEditHost.setText(mEvent.getmHost());
         mEditCost.setText(String.valueOf(mEvent.getmCost()));
 
-        EditText mEditEmail = (EditText) findViewById(R.id.editUpdateEmail);
+        TextView mEditEmail = (TextView) findViewById(R.id.editUpdateEmail);
         mEditEmail.setText(mEvent.getmEventCreator());
         mEditEmail.setEnabled(false);
 
         if (mEvent.getmEventCreator().equals(email)) {
             initEditDate();
-            mBtnUpdate.setOnClickListener(this);
+            mBtnDeleteEvent.setOnClickListener(this);
+            mBtnEdit.setOnClickListener(this);
         } else {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
             mEditName.setEnabled(false);
@@ -129,15 +130,23 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
             mEditDesc.setEnabled(false);
             mEditHost.setEnabled(false);
             mEditCost.setEnabled(false);
-            mBtnUpdate.setEnabled(false);
-            mBtnUpdate.setVisibility(View.GONE);
+            mBtnDeleteEvent.setEnabled(false);
+            mBtnEdit.setEnabled(false);
+            mBtnDeleteEvent.setVisibility(View.GONE);
+            mBtnEdit.setVisibility(View.GONE);
         }
+
 
         SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
         credential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff())
                 .setSelectedAccountName(preferences.getString(PREF_ACCOUNT_NAME, null));
+
+        mBtnAddToCalendar.setEnabled(false);
+
+        mBtnAddToCalendar.setOnClickListener(this);
+
     }
 
     @Override
@@ -152,6 +161,17 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
             // TODO: Show error
         }
 
+    }
+
+
+    private void refreshCalendar() {
+        if (following) {
+            mBtnAddToCalendar.setEnabled(false);
+            mBtnAddToCalendar.setText("Already added");
+        } else {
+            mBtnAddToCalendar.setEnabled(true);
+            mBtnAddToCalendar.setText("Add to calendar");
+        }
     }
 
     @Override
@@ -203,13 +223,30 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
             mEndDateDialog.show();
         } else if (v == mTextEndTime) {
             mEndTimeDialog.show();
-        } else if (v == mBtnUpdate) {
-            updateEvent();
-        }// else if (v == mBtnCancel) {
-        //    super.finish();
-        //}
+        } else if (v == mBtnAddToCalendar) {
+            addToCalendar();
+        } else if (v == mBtnDeleteEvent) {
+            Database.delete(mEvent.getmEventId());
+            finish();
+        } else if (v == mBtnEdit) {
+            Bundle bundle = getIntent().getExtras();
+            Event event = (Event) bundle.getSerializable("Event");
+            Intent i = new Intent(getBaseContext(), UpdateActivity.class);
+            i.putExtra("Event", event);
+            startActivity(i);
+        }
     }
 
+    private void addToCalendar() {
+        new AddToCalendarTask(this, credential, buildCalendarEvent()) {
+            @Override
+            protected void onPostExecute(Void result) {
+                following = true;
+                refreshCalendar();
+            }
+        }.execute();
+        mBtnAddToCalendar.setEnabled(false);
+    }
 
     private com.google.api.services.calendar.model.Event buildCalendarEvent() {
 
@@ -228,7 +265,7 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
 
     private void updateEvent() {
         mEvent.setmEventName(mEditName.getText().toString());
-        mEvent.setmEventLocation(mSpinnerLoc.getSelectedItem().toString());
+        mEvent.setmEventLocation(mSpinnerLoc.getText().toString());
 
         Date start = mStartCal.getTime();
         String sDate = EventTimeChecker.formatter.format(start);
@@ -253,6 +290,7 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
         }
 
         Database.update(mEvent);
+
         finish();
     }
 
@@ -263,9 +301,9 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
         if (index < 0) index = 0;
 
         ArrayAdapter<String> adaptLoc = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, locations);
-        mSpinnerLoc.setAdapter(adaptLoc);
+        //mSpinnerLoc.setAdapter(adaptLoc);
 
-        mSpinnerLoc.setSelection(index);
+//        mSpinnerLoc.setSelection(index);
     }
 
     private void initDates() {
@@ -348,7 +386,7 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
                     @Override
                     protected void onPostExecute(List<String> result) {
                         following = false;
-                        if(result != null) {
+                        if (result != null) {
 
                             for (String name : result) {
                                 if ((name != null) && (name.equals(mEvent.getmEventName()))) {
@@ -357,6 +395,7 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
                                 }
                             }
                         }
+                        refreshCalendar();
                     }
                 }.execute();
 
