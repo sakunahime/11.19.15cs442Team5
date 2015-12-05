@@ -43,7 +43,7 @@ public class MapsActivity extends BaseActivity {
 
     private int eventType;
 
-    private ImageButton refreshButton;
+   // private ImageButton refreshButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class MapsActivity extends BaseActivity {
         setUpMapIfNeeded();
     }
 
-    private void addRefreshButtonListerner() {
+   /* private void addRefreshButtonListerner() {
 
 
         refreshButton.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +75,7 @@ public class MapsActivity extends BaseActivity {
 
         });
 
-    }
+    }*/
 
     @Override
     protected void onResume() {
@@ -132,9 +132,9 @@ public class MapsActivity extends BaseActivity {
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
 
-        refreshButton= (ImageButton) findViewById(R.id.imageButton1);
+       /* refreshButton= (ImageButton) findViewById(R.id.imageButton1);
         refreshButton.setOnClickListener(this);
-        addRefreshButtonListerner();
+        addRefreshButtonListerner();*/
 
         loadAllEvents();
     }
