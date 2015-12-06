@@ -141,7 +141,7 @@ public class MyEventDetailActivity extends BaseActivity implements View.OnClickL
         credential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff())
-                .setSelectedAccountName(preferences.getString(PREF_ACCOUNT_NAME, null));
+                .setSelectedAccountName(preferences.getString(PREF_ACCOUNT_NAME, LoginActivity.accoutname));
 
         mBtnAddToCalendar.setEnabled(false);
 
@@ -165,13 +165,13 @@ public class MyEventDetailActivity extends BaseActivity implements View.OnClickL
 
 
     private void refreshCalendar() {
-        if (following) {
+        if (following && !mBtnAddToCalendar.getText().equals("Already Added")) {
             mBtnAddToCalendar.setEnabled(false);
-            mBtnAddToCalendar.setText("Already added");
+            mBtnAddToCalendar.setText("Already Added");
             mBtnAddToCalendar.setBackgroundColor(getApplication().getResources().getColor(R.color.grey));
-        } else {
+        } else if(!mBtnAddToCalendar.getText().equals("Add to Calender")){
             mBtnAddToCalendar.setEnabled(true);
-            mBtnAddToCalendar.setText("Add to calendar");
+            mBtnAddToCalendar.setText("Add to Calendar");
         }
     }
 

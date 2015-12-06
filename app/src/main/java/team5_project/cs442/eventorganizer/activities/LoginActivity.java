@@ -27,6 +27,12 @@ import com.google.android.gms.plus.model.people.Person;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.util.DateTime;
+import com.google.api.client.util.ExponentialBackOff;
+import com.google.api.services.calendar.CalendarScopes;
+import com.google.api.services.calendar.model.EventDateTime;
 
 import team5_project.cs442.eventorganizer.R;
 
@@ -43,6 +49,7 @@ public class LoginActivity extends AppCompatActivity implements
             + "hawk+(\\.iit+)*(\\.edu)$");
 
     static final String TAG = "LoginActivity";
+    public static String accoutname;
 
     /* RequestCode for resolutions involving sign-in */
     static final int RC_SIGN_IN = 1;
@@ -105,6 +112,7 @@ public class LoginActivity extends AppCompatActivity implements
                 .addScope(new Scope(Scopes.EMAIL))
                 .build();
         // [END create_google_api_client]
+
     }
 
     @Override
@@ -132,6 +140,7 @@ public class LoginActivity extends AppCompatActivity implements
                 if (checkAccountsPermission()) {
                     String currentAccount = Plus.AccountApi.getAccountName(mGoogleApiClient);
                     ((TextView) findViewById(R.id.email)).setText(currentAccount);
+                    accoutname=currentAccount;
 
                 }
             } else {

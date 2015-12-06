@@ -70,7 +70,7 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
     private EditText mEditCost;
 
     private Button mBtnUpdate;
-   // private Button mBtnCancel;
+    // private Button mBtnCancel;
 
     private DatePickerDialog mStartDateDialog;
     private TimePickerDialog mStartTimeDialog;
@@ -102,7 +102,7 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
         mEditHost = (EditText) findViewById(R.id.editUpdateHost);
         mEditCost = (EditText) findViewById(R.id.editUpdateCost);
         mBtnUpdate = (Button) findViewById(R.id.btnUpdate);
-      //  mBtnCancel = (Button) findViewById(R.id.btnCancel);
+        //  mBtnCancel = (Button) findViewById(R.id.btnCancel);
 
         mEditName.setText(mEvent.getmEventName());
         initLocation();
@@ -137,7 +137,7 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
         credential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff())
-                .setSelectedAccountName(preferences.getString(PREF_ACCOUNT_NAME, null));
+                .setSelectedAccountName(preferences.getString(PREF_ACCOUNT_NAME, LoginActivity.accoutname));
     }
 
     @Override
