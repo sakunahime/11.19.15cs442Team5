@@ -11,6 +11,9 @@
         android:layout_gravity="left"
         android:gravity="left"
         android:background="@color/white"
+        android:paddingLeft="6dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
         />
 
         <TextView
@@ -20,6 +23,8 @@
             android:id="@+id/event_start_time_info"
             android:gravity="right"
             android:background="@color/white"
+            android:paddingRight="6dp"
+            android:paddingTop="6dp"
             />
 
         <TextView
@@ -30,6 +35,8 @@
             android:layout_below="@id/event_start_time_info"
             android:gravity="right"
             android:background="@color/white"
+            android:paddingRight="6dp"
+            android:paddingBottom="6dp"
             />
 
 </RelativeLayout>

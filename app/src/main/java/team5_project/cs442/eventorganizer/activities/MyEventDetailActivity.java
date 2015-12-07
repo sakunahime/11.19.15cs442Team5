@@ -26,6 +26,7 @@ import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.EventDateTime;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -104,15 +105,19 @@ public class MyEventDetailActivity extends BaseActivity implements View.OnClickL
         mBtnDeleteEvent = (Button) findViewById(R.id.btnDelete);
         mBtnEdit = (Button) findViewById(R.id.btnEdit);
 
-        mEditName.setText(mEvent.getmEventName());
-        mSpinnerLoc.setText(mEvent.getmEventLocation());
+        mEditName.setText(mEvent.getmEventName() + "\n");
+        mSpinnerLoc.setText(mEvent.getmEventLocation() + "\n");
         initDates();
-        mEditDesc.setText(mEvent.getmDescription());
-        mEditHost.setText(mEvent.getmHost());
-        mEditCost.setText(String.valueOf(mEvent.getmCost()));
+        mEditDesc.setText(mEvent.getmDescription() + "\n");
+        mEditHost.setText(mEvent.getmHost() + "\n");
+
+        if (mEvent.getmCost() != 0) {
+            DecimalFormat df = new DecimalFormat("$#.00");
+            mEditCost.setText(String.valueOf(df.format(mEvent.getmCost())));
+        } else  mEditCost.setText("FREE");
 
         TextView mEditEmail = (TextView) findViewById(R.id.editUpdateEmail);
-        mEditEmail.setText(mEvent.getmEventCreator());
+        mEditEmail.setText(mEvent.getmEventCreator()+"\n");
         mEditEmail.setEnabled(false);
 
         if (mEvent.getmEventCreator().equals(email)) {
@@ -318,9 +323,9 @@ public class MyEventDetailActivity extends BaseActivity implements View.OnClickL
         mEndCal.setTime(mEvent.getmEventEndTime());
 
         mTextStartDate.setText(dateformat.format(mStartCal.getTime()));
-        mTextStartTime.setText(timeformat.format(mStartCal.getTime()));
+        mTextStartTime.setText(timeformat.format(mStartCal.getTime())+"\n");
         mTextEndDate.setText(dateformat.format(mEndCal.getTime()));
-        mTextEndTime.setText(timeformat.format(mEndCal.getTime()));
+        mTextEndTime.setText(timeformat.format(mEndCal.getTime())+"\n");
     }
 
     private void initEditDate() {

@@ -30,7 +30,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Event name"
+                        android:text="Event"
                         android:textColor="@color/red"
                         android:id="@+id/textUpdateName" />
 
@@ -38,8 +38,8 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/editUpdateName"
-                        android:textColor="@color/black"
-                        android:layout_weight="1" />
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/black" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -232,23 +232,23 @@
 
                 </LinearLayout>
 
+
             </LinearLayout>
         </ScrollView>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom|center_horizontal"
+        android:padding="16dp">
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <Button
+            style="@style/CustomButton"
+            android:text="Add to Calendar"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="bottom|center_horizontal"
-            android:padding="16dp">
+            android:id="@+id/btnAddToCalendar"/>
 
-            <Button
-                style="@style/CustomButton"
-                android:text="Add to Calendar"
-                android:layout_width="fill_parent"
-                android:id="@+id/btnAddToCalendar"/>
-
-        </LinearLayout>
+    </LinearLayout>
     </LinearLayout>
 
 <!--/RelativeLayout-->

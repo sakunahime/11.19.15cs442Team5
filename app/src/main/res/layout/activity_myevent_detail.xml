@@ -30,7 +30,7 @@ android:layout_height="match_parent">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Event name"
+                android:text="Event"
                 android:textColor="@color/red"
                 android:id="@+id/textUpdateName" />
 
@@ -38,6 +38,7 @@ android:layout_height="match_parent">
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editUpdateName"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/black"
                 android:layout_weight="1" />
         </LinearLayout>
@@ -253,7 +254,7 @@ android:layout_height="match_parent">
 
     <Button
         style="@style/CustomButton"
-        android:text="Delete Event"
+        android:text="Delete"
         android:id="@+id/btnDelete"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
